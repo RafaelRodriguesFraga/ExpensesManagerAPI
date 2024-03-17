@@ -1,0 +1,17 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/ExpensesManager.Api/obj
+/ExpensesManager.Application/obj
+/ExpensesManager.Domain/obj
+/ExpensesManager.Infra/obj
+/ExpensesManager.Shared/obj
+/ExpensesManager.Tests/obj
+/ExpensesManager.Api/bin/Debug/net6.0
+/ExpensesManager.Application/bin/Debug/net6.0
+/ExpensesManager.Domain/bin/Debug/net6.0
+/ExpensesManager.Infra/bin/Debug/net6.0
+/ExpensesManager.Shared/bin/Debug/net6.0
+/ExpensesManager.Tests/bin/Debug/net6.0
