@@ -15,3 +15,5 @@
 /ExpensesManager.Infra/bin/Debug/net6.0
 /ExpensesManager.Shared/bin/Debug/net6.0
 /ExpensesManager.Tests/bin/Debug/net6.0
+ExpensesManager.Api/appsettings.json
+ExpensesManager.Api/appsettings.Development.json
