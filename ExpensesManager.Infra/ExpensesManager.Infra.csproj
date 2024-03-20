@@ -7,4 +7,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DotnetBoilerplate.Components.Infra.Sql" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExpensesManager.Domain\ExpensesManager.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
