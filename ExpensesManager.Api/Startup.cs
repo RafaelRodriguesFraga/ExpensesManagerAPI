@@ -2,7 +2,10 @@ using DotnetBoilerplate.Components.Api;
 using DotnetBoilerplate.Components.Application;
 using ExpensesManager.Application.Services;
 using ExpensesManager.Application.Services.Token;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace ExpensesManager.Api
 {
@@ -46,6 +49,24 @@ namespace ExpensesManager.Api
                 });  
             });            
             services.AddControllers();
+
+            var secret = Configuration.GetSection("TokenSettings:Secret");
+            var key = Encoding.ASCII.GetBytes(secret.Value);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
 
             // Boilerplate Dependencies
             services.AddApi();
