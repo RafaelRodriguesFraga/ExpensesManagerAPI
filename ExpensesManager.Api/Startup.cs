@@ -2,7 +2,10 @@ using DotnetBoilerplate.Components.Api;
 using DotnetBoilerplate.Components.Application;
 using ExpensesManager.Application.Services;
 using ExpensesManager.Application.Services.Token;
+using ExpensesManager.Infra.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -19,6 +22,17 @@ namespace ExpensesManager.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString("PostgresConnetion");
+
+            services.AddDbContext<ExpensesManagerContext>(options =>
+            {
+
+                options.UseNpgsql(
+                    connectionString,
+                    optionsBuilder => optionsBuilder.MigrationsAssembly("ExpensesManager.Infra"));
+
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Expenses Manager API", Version = "v1" });
