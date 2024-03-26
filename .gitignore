@@ -17,3 +17,4 @@
 /ExpensesManager.Tests/bin/Debug/net6.0
 ExpensesManager.Api/appsettings.json
 ExpensesManager.Api/appsettings.Development.json
+/Api/obj
