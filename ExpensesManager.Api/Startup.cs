@@ -26,11 +26,9 @@ namespace ExpensesManager.Api
 
             services.AddDbContext<ExpensesManagerContext>(options =>
             {
-
                 options.UseNpgsql(
                     connectionString,
-                    optionsBuilder => optionsBuilder.MigrationsAssembly("ExpensesManager.Infra"));
-
+                    optionsBuilder => optionsBuilder.MigrationsAssembly(typeof(ExpensesManagerContext).Assembly.FullName));
             });
 
             services.AddSwaggerGen(c =>
