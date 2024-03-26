@@ -12,8 +12,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.OwnsOne(x => x.Password)
-            .Property(x => x.Password)
+        builder.Property(x => x.Password)
             .HasMaxLength(100)
             .IsRequired();
 

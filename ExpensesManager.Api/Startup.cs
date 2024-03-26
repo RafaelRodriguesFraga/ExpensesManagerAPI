@@ -1,5 +1,6 @@
 using DotnetBoilerplate.Components.Api;
 using DotnetBoilerplate.Components.Application;
+using DotnetBoilerplate.Components.Infra.Sql;
 using ExpensesManager.Application.Services;
 using ExpensesManager.Application.Services.Token;
 using ExpensesManager.Infra.Context;
@@ -22,14 +23,7 @@ namespace ExpensesManager.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("PostgresConnetion");
-
-            services.AddDbContext<ExpensesManagerContext>(options =>
-            {
-                options.UseNpgsql(
-                    connectionString,
-                    optionsBuilder => optionsBuilder.MigrationsAssembly(typeof(ExpensesManagerContext).Assembly.FullName));
-            });
+            services.AddDbContext<ExpensesManagerContext>(Configuration);
 
             services.AddSwaggerGen(c =>
             {
