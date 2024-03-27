@@ -15,7 +15,6 @@ namespace ExpensesManager.Infra.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new TestConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }

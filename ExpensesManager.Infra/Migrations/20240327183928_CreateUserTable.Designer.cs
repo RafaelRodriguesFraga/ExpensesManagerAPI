@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpensesManager.Infra.Migrations
 {
     [DbContext(typeof(ExpensesManagerContext))]
-    [Migration("20240326213204_CreateUserTable")]
+    [Migration("20240327183928_CreateUserTable")]
     partial class CreateUserTable
     {
         /// <inheritdoc />
@@ -24,20 +24,6 @@ namespace ExpensesManager.Infra.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ExpensesManager.Domain.Entities.Test", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Test");
-                });
 
             modelBuilder.Entity("ExpensesManager.Domain.Entities.User", b =>
                 {

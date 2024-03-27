@@ -22,20 +22,6 @@ namespace ExpensesManager.Infra.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ExpensesManager.Domain.Entities.Test", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Test");
-                });
-
             modelBuilder.Entity("ExpensesManager.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
