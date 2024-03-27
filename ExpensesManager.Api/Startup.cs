@@ -2,8 +2,15 @@ using DotnetBoilerplate.Components.Api;
 using DotnetBoilerplate.Components.Application;
 using DotnetBoilerplate.Components.Infra.Sql;
 using ExpensesManager.Application.Services;
+using ExpensesManager.Application.Services.Interfaces;
 using ExpensesManager.Application.Services.Token;
+using ExpensesManager.Domain.DTOs;
+using ExpensesManager.Domain.Entities;
+using ExpensesManager.Domain.Repositories;
+using ExpensesManager.Domain.Validations;
 using ExpensesManager.Infra.Context;
+using ExpensesManager.Infra.Repositories;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -79,6 +86,16 @@ namespace ExpensesManager.Api
             services.AddApplication();
 
             services.AddScoped<ITokenServiceApplication, TokenServiceApplication>();
+
+            // Register validator with service provider
+            services.AddScoped<IValidator<UserRequestDto>, UserRequestContract>();
+
+            // Repositories dependency injections
+            services.AddScoped<IUserReadRepository, UserReadRepository>();
+            services.AddScoped<IUserWriteRepository, UserWriteRepository>();
+
+            // Services dependency injections
+            services.AddScoped<IUserServiceApplication, UserServiceApplication>();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
