@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpensesManager.Infra.Migrations
 {
     [DbContext(typeof(ExpensesManagerContext))]
-    [Migration("20240327183928_CreateUserTable")]
-    partial class CreateUserTable
+    [Migration("20240330162321_Create_User_Table")]
+    partial class Create_User_Table
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,7 @@ namespace ExpensesManager.Infra.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("User");
+                    b.ToTable("users", (string)null);
                 });
 #pragma warning restore 612, 618
         }

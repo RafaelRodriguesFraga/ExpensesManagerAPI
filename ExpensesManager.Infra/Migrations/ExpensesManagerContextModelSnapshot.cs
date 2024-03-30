@@ -46,7 +46,7 @@ namespace ExpensesManager.Infra.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("User");
+                    b.ToTable("users", (string)null);
                 });
 #pragma warning restore 612, 618
         }
