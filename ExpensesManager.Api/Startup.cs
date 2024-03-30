@@ -59,7 +59,7 @@ namespace ExpensesManager.Api
                           }, 
                          new string[] {} 
                     } 
-                });  
+                });
             });            
             services.AddControllers();
 

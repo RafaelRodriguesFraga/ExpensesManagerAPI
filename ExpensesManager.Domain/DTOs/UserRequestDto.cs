@@ -4,9 +4,9 @@ namespace ExpensesManager.Domain.DTOs;
 
 public class UserRequestDto : BaseDto
 {
-    public string Email { get; protected set; }
-    public string Password { get; protected set; }
-    public string ConfirmPassword { get; protected set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public string ConfirmPassword { get; set; }
 
     public override void Validate()
     {

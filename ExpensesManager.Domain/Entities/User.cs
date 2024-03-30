@@ -10,6 +10,7 @@ namespace ExpensesManager.Domain.Entities
         {
             Email = email;
             Password = password;
+            HashPassword(Password);
         }
 
         public string Email { get; protected set; }

@@ -33,28 +33,26 @@ namespace ExpensesManager.Application.Services
         {
             var context = new ValidationContext<UserRequestDto>(userRequestDto);
             var result = await _validatorRequest.ValidateAsync(context);
-            var notifications = new List<Notification>();
 
             var invalidData = !result.IsValid;
 
             if (invalidData)
-                result.Errors.ForEach(error => _notificationContext.AddNotification(error.PropertyName, error.ErrorMessage ));
+            {
+                result.Errors.ForEach(error => _notificationContext.AddNotification(error.PropertyName, error.ErrorMessage));
+                return default;
+            }
 
             var emailExists = await _readRepository.GetByEmaillAsync(userRequestDto.Email) != null;
 
             if (emailExists)
                 _notificationContext.AddNotification("Email", "There is already a user with a registered email address.");
 
-            invalidData = notifications.Count > 0;
-
-            if (invalidData)
+            if (_notificationContext.HasNotifications)
                 return default;
 
             User user = userRequestDto;
 
-            await _writeRepository.InsertAsync(user);;
-
-            var erroAoSalvarAlteracoes = notifications.Count > 0;
+            await _writeRepository.InsertAsync(user);
 
             return user;
         }
