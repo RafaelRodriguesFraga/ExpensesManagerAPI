@@ -11,12 +11,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.ToTable("users");
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.CreatedAt)
+            .IsRequired()
+            .HasColumnType("timestamp without time zone");
+
         builder.Property(x => x.Email)
             .HasMaxLength(100)
             .IsRequired();
 
         builder.Property(x => x.Password)
-            .HasMaxLength(100)
             .IsRequired();
 
         builder.HasIndex(u => u.Email)

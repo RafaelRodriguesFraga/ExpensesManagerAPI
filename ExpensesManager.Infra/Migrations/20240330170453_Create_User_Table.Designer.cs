@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpensesManager.Infra.Migrations
 {
     [DbContext(typeof(ExpensesManagerContext))]
-    [Migration("20240330162321_Create_User_Table")]
+    [Migration("20240330170453_Create_User_Table")]
     partial class Create_User_Table
     {
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace ExpensesManager.Infra.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -41,8 +41,7 @@ namespace ExpensesManager.Infra.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
