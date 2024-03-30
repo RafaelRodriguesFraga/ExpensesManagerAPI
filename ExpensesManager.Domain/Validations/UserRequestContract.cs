@@ -26,8 +26,8 @@ namespace ExpensesManager.Domain.Validations
                 .WithMessage("The password is empty.");
 
             RuleFor(x => x.Password)
-                .Length(8, 100)
-                .WithMessage("The password must be a minimum of 8 and a maximum of 100 characters.")
+                .MinimumLength(6)
+                .WithMessage("The password must be at least 6 characters long.")
                 .When(x => !string.IsNullOrEmpty(x.Password));
 
             RuleFor(x => x.ConfirmPassword)
