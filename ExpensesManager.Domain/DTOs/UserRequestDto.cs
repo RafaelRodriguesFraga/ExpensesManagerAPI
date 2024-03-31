@@ -1,4 +1,5 @@
 using DotnetBoilerplate.Components.Domain.Dtos.Base;
+using ExpensesManager.Domain.Validations;
 
 namespace ExpensesManager.Domain.DTOs;
 
@@ -10,5 +11,7 @@ public class UserRequestDto : BaseDto
 
     public override void Validate()
     {
+        var validator = new UserRequestContract();
+        validator.Validate(this);
     }
 }

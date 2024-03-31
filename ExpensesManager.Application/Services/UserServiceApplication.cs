@@ -31,14 +31,12 @@ namespace ExpensesManager.Application.Services
 
         public async Task CreateUserAsync(UserRequestDto userRequestDto)
         {
-            var context = new ValidationContext<UserRequestDto>(userRequestDto);
-            var result = await _validatorRequest.ValidateAsync(context);
+            userRequestDto.Validate();
+            var invalidUser = userRequestDto.Invalid;
 
-            var invalidData = !result.IsValid;
-
-            if (invalidData)
+            if (invalidUser)
             {
-                result.Errors.ForEach(error => _notificationContext.AddNotification(error.PropertyName, error.ErrorMessage));
+                _notificationContext.AddNotifications(userRequestDto.Notifications);
                 return;
             }
 
