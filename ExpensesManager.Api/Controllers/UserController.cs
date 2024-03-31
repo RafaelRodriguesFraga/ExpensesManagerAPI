@@ -24,7 +24,7 @@ namespace TestApi.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> PostAsync(UserRequestDto userRequestDto)
         {
-            var response = await _userServiceApplication.CreateUserAsync(userRequestDto);
+            await _userServiceApplication.CreateUserAsync(userRequestDto);
 
             return ResponseCreated();
         }
