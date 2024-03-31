@@ -29,7 +29,7 @@ namespace ExpensesManager.Application.Services
             _validatorRequest = validatorRequest;
         }
 
-        public async Task<UserViewModel> CreateUserAsync(UserRequestDto userRequestDto)
+        public async Task CreateUserAsync(UserRequestDto userRequestDto)
         {
             var context = new ValidationContext<UserRequestDto>(userRequestDto);
             var result = await _validatorRequest.ValidateAsync(context);
@@ -39,7 +39,7 @@ namespace ExpensesManager.Application.Services
             if (invalidData)
             {
                 result.Errors.ForEach(error => _notificationContext.AddNotification(error.PropertyName, error.ErrorMessage));
-                return default;
+                return;
             }
 
             var emailExists = await _readRepository.GetByEmaillAsync(userRequestDto.Email) != null;
@@ -48,13 +48,11 @@ namespace ExpensesManager.Application.Services
                 _notificationContext.AddNotification("Email", "There is already a user with a registered email address.");
 
             if (_notificationContext.HasNotifications)
-                return default;
+                return;
 
             User user = userRequestDto;
 
             await _writeRepository.InsertAsync(user);
-
-            return user;
         }
     }
 }
