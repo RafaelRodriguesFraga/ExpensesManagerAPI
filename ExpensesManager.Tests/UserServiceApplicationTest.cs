@@ -30,6 +30,7 @@ namespace ExpensesManager.Tests
 
             var dbContextOptions = new DbContextOptionsBuilder<ExpensesManagerContext>()
                 .UseInMemoryDatabase(databaseName: "InMemoryTestDatabase")
+                .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
 
             _dbContext = new ExpensesManagerContext(dbContextOptions);
