@@ -1,4 +1,4 @@
-using DotnetBoilerplate.Components.Application.Base;
+using DotnetBaseKit.Components.Application.Base;
 using expensesManager.Application.Services;
 
 namespace ExpensesManager.Application.Services

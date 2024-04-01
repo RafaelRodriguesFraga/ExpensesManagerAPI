@@ -1,4 +1,5 @@
-using DotnetBoilerplate.Components.Infra.Sql.Context.Base;
+using DotnetBaseKit.Components.Infra.Sql.Context.Base;
+using DotnetBaseKit.Components.Shared.Notifications;
 using ExpensesManager.Infra.Sql.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,14 +9,15 @@ namespace ExpensesManager.Infra.Context
     {
         public ExpensesManagerContext(DbContextOptions<ExpensesManagerContext> options) : base(options)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.ApplyConfiguration(new TestConfiguration());
+            
+            modelBuilder.Entity<Notification>().HasNoKey();
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }

@@ -1,8 +1,22 @@
-using DotnetBoilerplate.Components.Api;
-using DotnetBoilerplate.Components.Application;
+using DotnetBaseKit.Components.Api;
+using DotnetBaseKit.Components.Application;
+using DotnetBaseKit.Components.Infra.Sql;
 using ExpensesManager.Application.Services;
+using ExpensesManager.Application.Services.Interfaces;
 using ExpensesManager.Application.Services.Token;
+using ExpensesManager.Domain.DTOs;
+using ExpensesManager.Domain.Entities;
+using ExpensesManager.Domain.Repositories;
+using ExpensesManager.Domain.Validations;
+using ExpensesManager.Infra.Context;
+using ExpensesManager.Infra.Repositories;
+using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace ExpensesManager.Api
 {
@@ -16,6 +30,8 @@ namespace ExpensesManager.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ExpensesManagerContext>(Configuration);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Expenses Manager API", Version = "v1" });
@@ -43,15 +59,43 @@ namespace ExpensesManager.Api
                           }, 
                          new string[] {} 
                     } 
-                });  
+                });
             });            
             services.AddControllers();
+
+            var secret = Configuration.GetSection("TokenSettings:Secret");
+            var key = Encoding.ASCII.GetBytes(secret.Value);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
 
             // Boilerplate Dependencies
             services.AddApi();
             services.AddApplication();
 
             services.AddScoped<ITokenServiceApplication, TokenServiceApplication>();
+
+            // Register validator with service provider
+            services.AddScoped<IValidator<UserRequestDto>, UserRequestContract>();
+
+            // Repositories dependency injections
+            services.AddScoped<IUserReadRepository, UserReadRepository>();
+            services.AddScoped<IUserWriteRepository, UserWriteRepository>();
+
+            // Services dependency injections
+            services.AddScoped<IUserServiceApplication, UserServiceApplication>();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)

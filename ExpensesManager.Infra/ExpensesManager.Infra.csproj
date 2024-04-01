@@ -8,11 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotnetBoilerplate.Components.Infra.Sql" Version="1.0.1" />
+    <PackageReference Include="DotnetBaseKit.Components.Infra.Sql" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ExpensesManager.Domain\ExpensesManager.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
