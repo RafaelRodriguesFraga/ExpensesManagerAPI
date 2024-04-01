@@ -41,7 +41,7 @@ namespace ExpensesManager.Tests
         {
             var userRequest = new UserRequestDto
             {
-                Email = "teste@teste.com",
+                Email = "test@test.com",
                 Password = "123456",
                 ConfirmPassword = "123456"
             };
@@ -60,20 +60,21 @@ namespace ExpensesManager.Tests
             await _dbContext.AddAsync(existingUserByEmail);
             await _dbContext.SaveChangesAsync();
 
-            //Configurando o mock para qualquer chamada de InsertAsync com qualquer instância de User
-            _writeRepositoryMock.Setup(x => x.InsertAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
-
             var userRequest = new UserRequestDto
             {
-                Email = "teste@teste.com",
+                Email = "test@test.com",
                 Password = "123456",
                 ConfirmPassword = "123456"
             };
 
-            // Chamar o método a ser testado
+            _readRepositoryMock.Setup(repo => repo.GetByEmaillAsync(userRequest.Email)).ReturnsAsync(It.IsAny<User>());
+            _writeRepositoryMock.Setup(repo => repo.InsertAsync(It.IsAny<User>()))
+                .Returns(Task.CompletedTask);
+
             await _userServiceApplication.CreateUserAsync(userRequest);
 
-            // Asserção do resultado esperado
+            Assert.NotEmpty(_notificationContext.Notifications);
+            _writeRepositoryMock.Verify(repo => repo.InsertAsync(It.IsAny<User>()), Times.Once);
             Assert.True(userRequest.Invalid);
 
             // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
