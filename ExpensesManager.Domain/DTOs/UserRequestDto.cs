@@ -1,4 +1,4 @@
-using DotnetBoilerplate.Components.Domain.Dtos.Base;
+using DotnetBaseKit.Components.Domain.Dtos.Base;
 using ExpensesManager.Domain.Validations;
 
 namespace ExpensesManager.Domain.DTOs;
@@ -11,7 +11,9 @@ public class UserRequestDto : BaseDto
 
     public override void Validate()
     {
-        var validator = new UserRequestContract();
-        validator.Validate(this);
+        var validation = new UserRequestContract();
+        var validationResult = validation.Validate(this);
+
+        AddNotifications(validationResult);
     }
 }

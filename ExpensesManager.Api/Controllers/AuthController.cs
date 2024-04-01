@@ -1,5 +1,5 @@
-using DotnetBoilerplate.Components.Api.Base;
-using DotnetBoilerplate.Components.Api.Responses;
+using DotnetBaseKit.Components.Api.Base;
+using DotnetBaseKit.Components.Api.Responses;
 using ExpensesManager.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;

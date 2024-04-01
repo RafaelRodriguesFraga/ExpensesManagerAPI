@@ -8,6 +8,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+
+        builder.Ignore(entity => entity.Notifications);
+        builder.Ignore(entity => entity.Valid);
+        builder.Ignore(entity => entity.Invalid);
+
         builder.ToTable("users");
         builder.HasKey(x => x.Id);
 

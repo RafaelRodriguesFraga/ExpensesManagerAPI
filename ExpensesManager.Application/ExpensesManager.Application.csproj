@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotnetBoilerplate.Components.Application" Version="2.0.2" />
+    <PackageReference Include="DotnetBaseKit.Components.Application" Version="2.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.1" />
   </ItemGroup>

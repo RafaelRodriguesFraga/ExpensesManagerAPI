@@ -1,18 +1,8 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using DotnetBoilerplate.Components.Application.Base;
-using DotnetBoilerplate.Components.Shared.Notifications;
-using expensesManager.Application.Services;
+using DotnetBaseKit.Components.Application.Base;
+using DotnetBaseKit.Components.Shared.Notifications;
 using ExpensesManager.Application.Services.Interfaces;
-using ExpensesManager.Application.ViewModels;
 using ExpensesManager.Domain.DTOs;
-using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Repositories;
-using FluentValidation;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ExpensesManager.Application.Services
 {
@@ -20,13 +10,11 @@ namespace ExpensesManager.Application.Services
     {
         private readonly IUserWriteRepository _writeRepository;
         private readonly IUserReadRepository _readRepository;
-        private readonly IValidator _validatorRequest;
 
-        public UserServiceApplication(NotificationContext notificationContext, IUserReadRepository readRepository, IUserWriteRepository writeRepository, IValidator<UserRequestDto> validatorRequest) : base(notificationContext)
+        public UserServiceApplication(NotificationContext notificationContext, IUserReadRepository readRepository, IUserWriteRepository writeRepository) : base(notificationContext)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
-            _validatorRequest = validatorRequest;
         }
 
         public async Task CreateUserAsync(UserRequestDto userRequestDto)
@@ -43,14 +31,12 @@ namespace ExpensesManager.Application.Services
             var emailExists = await _readRepository.GetByEmaillAsync(userRequestDto.Email) != null;
 
             if (emailExists)
+            {
                 _notificationContext.AddNotification("Email", "There is already a user with a registered email address.");
-
-            if (_notificationContext.HasNotifications)
                 return;
+            }
 
-            User user = userRequestDto;
-
-            await _writeRepository.InsertAsync(user);
+            await _writeRepository.InsertAsync(userRequestDto);
         }
     }
 }

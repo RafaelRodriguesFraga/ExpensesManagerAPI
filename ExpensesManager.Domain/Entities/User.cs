@@ -1,4 +1,4 @@
-using DotnetBoilerplate.Components.Domain.Sql.Entities.Base;
+using DotnetBaseKit.Components.Domain.Sql.Entities.Base;
 using ExpensesManager.Domain.DTOs;
 
 namespace ExpensesManager.Domain.Entities

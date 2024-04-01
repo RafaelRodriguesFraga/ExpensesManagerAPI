@@ -23,7 +23,7 @@ namespace ExpensesManager.Domain.Validations
 
             RuleFor(x => x.Password)
                 .NotEmpty()
-                .WithMessage("The password is empty.");
+                .WithMessage("The password cannot be empty.");
 
             RuleFor(x => x.Password)
                 .MinimumLength(6)
@@ -32,7 +32,7 @@ namespace ExpensesManager.Domain.Validations
 
             RuleFor(x => x.ConfirmPassword)
                 .Equal(x => x.Password)
-                .WithMessage("The confirmation password does not match.")
+                .WithMessage("The password does not match.")
                 .When(x => !string.IsNullOrEmpty(x.Password));
         }
     }

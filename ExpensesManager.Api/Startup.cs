@@ -1,6 +1,6 @@
-using DotnetBoilerplate.Components.Api;
-using DotnetBoilerplate.Components.Application;
-using DotnetBoilerplate.Components.Infra.Sql;
+using DotnetBaseKit.Components.Api;
+using DotnetBaseKit.Components.Application;
+using DotnetBaseKit.Components.Infra.Sql;
 using ExpensesManager.Application.Services;
 using ExpensesManager.Application.Services.Interfaces;
 using ExpensesManager.Application.Services.Token;
