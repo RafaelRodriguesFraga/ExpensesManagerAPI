@@ -5,6 +5,7 @@ name: Build and deploy ASP.Net Core app
 
 on:
   pull_request:
+    types: [closed]
     branches:
       [master]
   workflow_dispatch:
