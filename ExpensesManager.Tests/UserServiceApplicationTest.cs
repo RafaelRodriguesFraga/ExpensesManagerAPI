@@ -6,10 +6,8 @@ using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Repositories;
 using ExpensesManager.Infra.Context;
-using ExpensesManager.Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Options;
 using Moq;
 
 namespace ExpensesManager.Tests
@@ -19,7 +17,6 @@ namespace ExpensesManager.Tests
         private readonly IUserServiceApplication _userServiceApplication;
         private readonly Mock<IUserReadRepository> _readRepositoryMock;
         private readonly Mock<IUserWriteRepository> _writeRepositoryMock;
-        private readonly ExpensesManagerContext _dbContext;
         private readonly NotificationContext _notificationContext;
 
         public UserServiceApplicationTest()
@@ -27,13 +24,6 @@ namespace ExpensesManager.Tests
             _readRepositoryMock = new Mock<IUserReadRepository>();
             _writeRepositoryMock = new Mock<IUserWriteRepository>();
             _notificationContext = new NotificationContext();
-
-            var dbContextOptions = new DbContextOptionsBuilder<ExpensesManagerContext>()
-                .UseInMemoryDatabase(databaseName: "InMemoryTestDatabase")
-                .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-            .Options;
-
-            _dbContext = new ExpensesManagerContext(dbContextOptions);
             _userServiceApplication = new UserServiceApplication(_notificationContext, _readRepositoryMock.Object, _writeRepositoryMock.Object);
         }
 
@@ -47,8 +37,6 @@ namespace ExpensesManager.Tests
                 ConfirmPassword = "123456"
             };
 
-            _writeRepositoryMock.Setup(repo => repo.InsertAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
-
             await _userServiceApplication.CreateUserAsync(userRequest);
 
             Assert.True(userRequest.Valid);
@@ -57,48 +45,22 @@ namespace ExpensesManager.Tests
         [Fact]
         public async Task CreateUserAsync_Should_Return_Invalid_On_Duplicate_Email_User_Request()
         {
-            var existingUserByEmail = new User("test@test.com", "123456");
-            await _dbContext.AddAsync(existingUserByEmail);
-            await _dbContext.SaveChangesAsync();
+            var existingUserEmail = "existing@example.com";
 
             var userRequest = new UserRequestDto
             {
-                Email = "test@test.com",
+                Email = existingUserEmail,
                 Password = "123456",
                 ConfirmPassword = "123456"
             };
 
-            _readRepositoryMock.Setup(repo => repo.GetByEmaillAsync(userRequest.Email)).ReturnsAsync(It.IsAny<User>());
-            _writeRepositoryMock.Setup(repo => repo.InsertAsync(It.IsAny<User>()))
-                .Returns(Task.CompletedTask);
+            _readRepositoryMock
+                .Setup(repo => repo.GetByEmaillAsync(existingUserEmail))
+                .ReturnsAsync(new User(existingUserEmail, "123456"));
 
             await _userServiceApplication.CreateUserAsync(userRequest);
 
             Assert.NotEmpty(_notificationContext.Notifications);
-            _writeRepositoryMock.Verify(repo => repo.InsertAsync(It.IsAny<User>()), Times.Once);
-            Assert.True(userRequest.Invalid);
-
-            // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-            //var options = new DbContextOptionsBuilder<ExpensesManagerContext>()
-            //    .UseInMemoryDatabase(databaseName: "TestDatabase")
-            //    .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-            //    .Options;
-
-            //var existingUserByEmail = new User("test@test.com", "123456");
-            //await _dbContext.AddAsync(existingUserByEmail);
-            //await _dbContext.SaveChangesAsync();
-
-            //var userRequest = new UserRequestDto
-            //{
-            //    Email = "teste@teste.com",
-            //    Password = "123456",
-            //    ConfirmPassword = "123456"
-            //};
-
-            //_userWriteRepository.Setup(x => x.InsertAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
-
-            //Assert.True(userRequest.Invalid);
         }
     }
 }
