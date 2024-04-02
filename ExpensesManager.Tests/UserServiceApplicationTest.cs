@@ -62,5 +62,20 @@ namespace ExpensesManager.Tests
 
             Assert.NotEmpty(_notificationContext.Notifications);
         }
+
+        [Fact]
+        public async Task CreateUserAsync_Should_Return_Invalid_On_Incorrect_User_Request()
+        {
+            var userRequest = new UserRequestDto
+            {
+                Email = "test",
+                Password = "12345",
+                ConfirmPassword = "12345"
+            };
+
+            await _userServiceApplication.CreateUserAsync(userRequest);
+
+            Assert.True(userRequest.Invalid);
+        }
     }
 }
