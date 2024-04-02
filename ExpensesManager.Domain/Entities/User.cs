@@ -5,7 +5,7 @@ namespace ExpensesManager.Domain.Entities
 {
     public class User : BaseEntity
     {
-        protected User() { }
+        public User() { }
         public User(string email, string password)
         {
             Email = email;
