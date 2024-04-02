@@ -43,7 +43,7 @@ namespace ExpensesManager.Tests
         }
 
         [Fact]
-        public async Task CreateUserAsync_Should_Return_Invalid_On_Duplicate_Email_User_Request()
+        public async Task CreateUserAsync_Should_Return_Notifications_On_Duplicate_Email_User_Request()
         {
             var existingUserEmail = "existing@example.com";
 
