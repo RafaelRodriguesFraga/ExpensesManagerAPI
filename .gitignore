@@ -18,3 +18,4 @@
 ExpensesManager.Api/appsettings.json
 ExpensesManager.Api/appsettings.Development.json
 /Api/obj
+/ExpensesManager.Infra.IoC/obj
