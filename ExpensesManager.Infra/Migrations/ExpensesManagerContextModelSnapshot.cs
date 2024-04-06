@@ -47,6 +47,22 @@ namespace ExpensesManager.Infra.Migrations
 
                     b.ToTable("users", (string)null);
                 });
+
+            modelBuilder.Entity("ExpensesManager.Domain.Entities.Person", b =>
+                {
+                    b.HasOne("ExpensesManager.Domain.Entities.User", "User")
+                        .WithMany("People")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ExpensesManager.Domain.Entities.User", b =>
+                {
+                    b.Navigation("People");
+                });
 #pragma warning restore 612, 618
         }
     }

@@ -11,12 +11,14 @@ using ExpensesManager.Domain.Validations;
 using ExpensesManager.Infra.Context;
 using ExpensesManager.Infra.Repositories;
 using FluentValidation;
+using ExpensesManager.Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using ExpensesManager.Application.Services.Person;
 
 namespace ExpensesManager.Api
 {
@@ -36,15 +38,15 @@ namespace ExpensesManager.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Expenses Manager API", Version = "v1" });
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() 
-                { 
-                    Name = "Authorization", 
-                    Type = SecuritySchemeType.ApiKey, 
-                    Scheme = "Bearer", 
-                    BearerFormat = "JWT", 
-                    In = ParameterLocation.Header, 
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below. \r\n\r\nExample: \"Bearer 12345abcdef\"", 
-                }); 
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below. \r\n\r\nExample: \"Bearer 12345abcdef\"",
+                });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement 
                 { 
@@ -96,6 +98,11 @@ namespace ExpensesManager.Api
 
             // Services dependency injections
             services.AddScoped<IUserServiceApplication, UserServiceApplication>();
+            services.AddScoped<IPersonServiceApplication, PersonServiceApplication>();
+            services.AddScoped<IPersonWriteRepository, PersonWriteRepository>();
+            services.AddScoped<IPersonReadRepository, PersonReadRepository>();
+
+
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)

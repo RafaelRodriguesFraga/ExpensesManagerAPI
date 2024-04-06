@@ -15,6 +15,7 @@ namespace ExpensesManager.Domain.Entities
 
         public string Email { get; protected set; }
         public string Password { get; protected set; }
+        public ICollection<Person> People { get; private set; }
 
         public static implicit operator User(UserRequestDto userRequestDto)
         {

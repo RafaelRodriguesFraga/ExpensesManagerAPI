@@ -18,6 +18,7 @@ namespace ExpensesManager.Infra.Context
             
             modelBuilder.Entity<Notification>().HasNoKey();
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new PersonConfiguration());
         }
     }
 }
