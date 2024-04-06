@@ -4,17 +4,10 @@ using DotnetBaseKit.Components.Infra.Sql;
 using ExpensesManager.Application.Services;
 using ExpensesManager.Application.Services.Interfaces;
 using ExpensesManager.Application.Services.Token;
-using ExpensesManager.Domain.DTOs;
-using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Repositories;
-using ExpensesManager.Domain.Validations;
 using ExpensesManager.Infra.Context;
 using ExpensesManager.Infra.Repositories;
-using FluentValidation;
-using ExpensesManager.Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -87,16 +80,11 @@ namespace ExpensesManager.Api
             services.AddApi();
             services.AddApplication();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddScoped<ITokenServiceApplication, TokenServiceApplication>();
-
-            // Register validator with service provider
-            services.AddScoped<IValidator<UserRequestDto>, UserRequestContract>();
-
-            // Repositories dependency injections
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IUserWriteRepository, UserWriteRepository>();
-
-            // Services dependency injections
             services.AddScoped<IUserServiceApplication, UserServiceApplication>();
             services.AddScoped<IPersonServiceApplication, PersonServiceApplication>();
             services.AddScoped<IPersonWriteRepository, PersonWriteRepository>();

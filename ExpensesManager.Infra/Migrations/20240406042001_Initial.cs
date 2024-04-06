@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ExpensesManager.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_User_Table : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +25,31 @@ namespace ExpensesManager.Infra.Migrations
                     table.PrimaryKey("PK_users", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "people",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_people", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_people_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_people_UserId",
+                table: "people",
+                column: "UserId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_users_Email",
                 table: "users",
@@ -35,6 +60,9 @@ namespace ExpensesManager.Infra.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "people");
+
             migrationBuilder.DropTable(
                 name: "users");
         }
