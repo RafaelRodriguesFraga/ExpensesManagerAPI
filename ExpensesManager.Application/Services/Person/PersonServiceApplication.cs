@@ -1,5 +1,6 @@
 using AutoMapper;
 using DotnetBaseKit.Components.Application.Base;
+using DotnetBaseKit.Components.Application.Pagination;
 using DotnetBaseKit.Components.Shared.Notifications;
 using ExpensesManager.Application.ViewModels.Person;
 using ExpensesManager.Domain.DTOs;
@@ -20,7 +21,7 @@ namespace ExpensesManager.Application.Services.Person
             _mapper = mapper;
         }
 
-        public async Task AddPersonAsync(PersonDto person)
+        public async Task CreateAsync(PersonDto person)
         {
             await _personWriteRepository.InsertAsync(person);
         }
@@ -28,12 +29,21 @@ namespace ExpensesManager.Application.Services.Person
         public async Task<IEnumerable<PersonViewModel>> GetAllAsync()
         {
             var person = await _personReadRepository.GetAllAsync();
-            var personViewModel = _mapper.Map<IEnumerable<PersonViewModel>>(person);
+            var personViewModelList = _mapper.Map<IEnumerable<PersonViewModel>>(person);
 
-            return personViewModel;
+            return personViewModelList;
         }
 
-        public async Task<PersonViewModel> GetPersonByIdAsync(Guid id)
+        public async Task<PaginationResponse<PersonViewModel>> GetAllPaginatedAsync(int page, int quantityPerPage)
+        {
+            var (people, totalRecords) = await _personReadRepository.GetAllPaginatedAsync(page, quantityPerPage);
+
+            var personViewModelList = _mapper.Map<IEnumerable<PersonViewModel>>(people);
+
+            return new PaginationResponse<PersonViewModel>(page, quantityPerPage, totalRecords, personViewModelList);
+        }
+
+        public async Task<PersonViewModel> GetByIdAsync(Guid id)
         {
             var person = await _personReadRepository.GetByIdAsync(id);
             if (person == null)
@@ -45,7 +55,7 @@ namespace ExpensesManager.Application.Services.Person
             return person;
         }
 
-        public async Task<PersonViewModel> GetPersonByNameAsync(string name)
+        public async Task<PersonViewModel> GetByNameAsync(string name)
         {
             var person = await _personReadRepository.GetByNameAsync(name);
             if (person == null)

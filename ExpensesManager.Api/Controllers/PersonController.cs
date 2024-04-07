@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpensesManager.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/person")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public class PersonController : ApiControllerBase
     {
@@ -19,17 +19,18 @@ namespace ExpensesManager.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPersonAsync([FromBody] PersonDto personDto)
+        public async Task<IActionResult> CreateAsync([FromBody] PersonDto personDto)
         {
-            await _personServiceApplication.AddPersonAsync(personDto);
+            await _personServiceApplication.CreateAsync(personDto);
 
             return ResponseCreated();
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllAsync([FromQuery] int page, [FromQuery] int quantityPerPage)
         {
-            var people = await _personServiceApplication.GetAllAsync();
+            var people = await _personServiceApplication.GetAllPaginatedAsync(page, quantityPerPage);
 
             return ResponseOk(people);
         }
@@ -37,7 +38,7 @@ namespace ExpensesManager.Api.Controllers
         [HttpGet("{name}")]
         public async Task<IActionResult> GetByNameAsync([FromRoute] string name)
         {
-            var person = await _personServiceApplication.GetPersonByNameAsync(name);
+            var person = await _personServiceApplication.GetByNameAsync(name);
 
             return ResponseOk(person);
         }
