@@ -27,7 +27,6 @@ namespace ExpensesManager.Api.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync([FromQuery] int page, [FromQuery] int quantityPerPage)
         {
             var people = await _personServiceApplication.GetAllPaginatedAsync(page, quantityPerPage);
