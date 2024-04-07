@@ -23,6 +23,14 @@ namespace ExpensesManager.Application.Services.Person
 
         public async Task CreateAsync(PersonDto person)
         {
+            person.Validate();
+            var personHasErrors = person.Invalid;
+            if (personHasErrors)
+            {
+                _notificationContext.AddNotifications(person.Notifications);
+                return;
+            }
+
             await _personWriteRepository.InsertAsync(person);
         }
 
@@ -63,7 +71,6 @@ namespace ExpensesManager.Application.Services.Person
                 _notificationContext.AddNotification("Error", "Person not found");
                 return default!;
             }
-
             return person;
         }
     }
