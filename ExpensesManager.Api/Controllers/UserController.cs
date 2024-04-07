@@ -22,9 +22,9 @@ namespace TestApi.Api.Controllers
         
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> PostAsync(UserRequestDto userRequestDto)
+        public async Task<IActionResult> CreateAsync(UserRequestDto userRequestDto)
         {
-            await _userServiceApplication.CreateUserAsync(userRequestDto);
+            await _userServiceApplication.CreateAsync(userRequestDto);
 
             return ResponseCreated();
         }

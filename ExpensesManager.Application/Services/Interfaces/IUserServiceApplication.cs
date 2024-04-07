@@ -7,6 +7,6 @@ namespace ExpensesManager.Application.Services.Interfaces
 {
     public interface IUserServiceApplication : IBaseServiceApplication
     {
-        Task CreateUserAsync(UserRequestDto userRequestDto);
+        Task CreateAsync(UserRequestDto userRequestDto);
     }
 }

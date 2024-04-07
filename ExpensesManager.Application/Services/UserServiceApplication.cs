@@ -17,7 +17,7 @@ namespace ExpensesManager.Application.Services
             _writeRepository = writeRepository;
         }
 
-        public async Task CreateUserAsync(UserRequestDto userRequestDto)
+        public async Task CreateAsync(UserRequestDto userRequestDto)
         {
             userRequestDto.Validate();
             var invalidUser = userRequestDto.Invalid;

@@ -28,7 +28,7 @@ namespace ExpensesManager.Tests
         }
 
         [Fact]
-        public async Task CreateUserAsync_Should_Return_Valid_On_Correct_User_Request()
+        public async Task CreateAsync_Should_Return_Valid_On_Correct_User_Request()
         {
             var userRequest = new UserRequestDto
             {
@@ -37,13 +37,13 @@ namespace ExpensesManager.Tests
                 ConfirmPassword = "123456"
             };
 
-            await _userServiceApplication.CreateUserAsync(userRequest);
+            await _userServiceApplication.CreateAsync(userRequest);
 
             Assert.True(userRequest.Valid);
         }
 
         [Fact]
-        public async Task CreateUserAsync_Should_Return_Notifications_On_Duplicate_Email_User_Request()
+        public async Task CreateAsync_Should_Return_Notifications_On_Duplicate_Email_User_Request()
         {
             var existingUserEmail = "existing@example.com";
 
@@ -58,13 +58,13 @@ namespace ExpensesManager.Tests
                 .Setup(repo => repo.GetByEmaillAsync(existingUserEmail))
                 .ReturnsAsync(new User(existingUserEmail, "123456"));
 
-            await _userServiceApplication.CreateUserAsync(userRequest);
+            await _userServiceApplication.CreateAsync(userRequest);
 
             Assert.NotEmpty(_notificationContext.Notifications);
         }
 
         [Fact]
-        public async Task CreateUserAsync_Should_Return_Invalid_On_Incorrect_User_Request()
+        public async Task CreateAsync_Should_Return_Invalid_On_Incorrect_User_Request()
         {
             var userRequest = new UserRequestDto
             {
@@ -73,7 +73,7 @@ namespace ExpensesManager.Tests
                 ConfirmPassword = "12345"
             };
 
-            await _userServiceApplication.CreateUserAsync(userRequest);
+            await _userServiceApplication.CreateAsync(userRequest);
 
             Assert.True(userRequest.Invalid);
         }
