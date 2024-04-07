@@ -2,7 +2,7 @@ using DotnetBaseKit.Components.Api;
 using DotnetBaseKit.Components.Application;
 using DotnetBaseKit.Components.Infra.Sql;
 using ExpensesManager.Application.Services;
-using ExpensesManager.Application.Services.Interfaces;
+using ExpensesManager.Application.Services.User;
 using ExpensesManager.Application.Services.Token;
 using ExpensesManager.Domain.Repositories;
 using ExpensesManager.Infra.Context;
