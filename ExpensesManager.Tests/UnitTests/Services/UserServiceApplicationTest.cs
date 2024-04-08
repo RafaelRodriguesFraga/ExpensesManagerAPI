@@ -1,7 +1,7 @@
 using Castle.Core.Resource;
 using DotnetBaseKit.Components.Shared.Notifications;
 using ExpensesManager.Application.Services;
-using ExpensesManager.Application.Services.Interfaces;
+using ExpensesManager.Application.Services.User;
 using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Repositories;
