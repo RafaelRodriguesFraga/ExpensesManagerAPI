@@ -18,12 +18,19 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql" Version="7.0.6" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" /> 
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ExpensesManager.Application\ExpensesManager.Application.csproj" />
     <ProjectReference Include="..\ExpensesManager.Infra\ExpensesManager.Infra.csproj" />
   </ItemGroup>
+
+    <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 
 </Project>

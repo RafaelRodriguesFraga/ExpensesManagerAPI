@@ -3,10 +3,10 @@ using expensesManager.Application.Services;
 using ExpensesManager.Application.ViewModels;
 using ExpensesManager.Domain.DTOs;
 
-namespace ExpensesManager.Application.Services.Interfaces
+namespace ExpensesManager.Application.Services.User
 {
     public interface IUserServiceApplication : IBaseServiceApplication
     {
-        Task CreateUserAsync(UserRequestDto userRequestDto);
+        Task CreateAsync(UserRequestDto userRequestDto);
     }
 }

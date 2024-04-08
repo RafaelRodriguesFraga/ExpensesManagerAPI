@@ -1,6 +1,6 @@
 using DotnetBaseKit.Components.Application.Base;
 using DotnetBaseKit.Components.Shared.Notifications;
-using ExpensesManager.Application.Services.Interfaces;
+using ExpensesManager.Application.Services.User;
 using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Repositories;
 
@@ -17,7 +17,7 @@ namespace ExpensesManager.Application.Services
             _writeRepository = writeRepository;
         }
 
-        public async Task CreateUserAsync(UserRequestDto userRequestDto)
+        public async Task CreateAsync(UserRequestDto userRequestDto)
         {
             userRequestDto.Validate();
             var invalidUser = userRequestDto.Invalid;

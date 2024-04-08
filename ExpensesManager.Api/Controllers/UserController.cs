@@ -1,7 +1,7 @@
 using DotnetBaseKit.Components.Api.Base;
 using DotnetBaseKit.Components.Api.Responses;
 using ExpensesManager.Application.Services;
-using ExpensesManager.Application.Services.Interfaces;
+using ExpensesManager.Application.Services.User;
 using ExpensesManager.Domain.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +22,9 @@ namespace TestApi.Api.Controllers
         
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> PostAsync(UserRequestDto userRequestDto)
+        public async Task<IActionResult> CreateAsync(UserRequestDto userRequestDto)
         {
-            await _userServiceApplication.CreateUserAsync(userRequestDto);
+            await _userServiceApplication.CreateAsync(userRequestDto);
 
             return ResponseCreated();
         }
