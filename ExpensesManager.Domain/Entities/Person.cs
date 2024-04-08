@@ -9,6 +9,7 @@ namespace ExpensesManager.Domain.Entities
 {
     public class Person : BaseEntity
     {
+        public Person() { }
         public Person(string name, Guid userId)
         {
             Name = name;
