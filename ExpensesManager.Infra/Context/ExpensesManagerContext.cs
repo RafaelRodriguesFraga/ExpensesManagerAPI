@@ -19,6 +19,7 @@ namespace ExpensesManager.Infra.Context
             modelBuilder.Ignore<Notification>();
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new PersonConfiguration());
+            modelBuilder.ApplyConfiguration(new ExpenseConfiguration());
         }
     }
 }
