@@ -29,6 +29,7 @@ namespace ExpensesManager.Domain.Entities
         public string InvoiceMonth { get; private set; }
         public bool IsInstallment { get; private set; }
         public bool Paid { get; private set; }
+        public Guid PersonId { get; private set; }
         public Person Person { get; private set; }
 
         //public static implicit operator Expense(ExpenseDto expenseDto)
