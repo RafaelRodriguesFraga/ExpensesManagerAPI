@@ -20,10 +20,10 @@ namespace ExpensesManager.Domain.DTOs
         public Guid PersonId { get; set; }
         public override void Validate()
         {
-            //var validation = new ExpenseDtoContract();
-            //var validationResult = validation.Validate(this);
+            var validation = new ExpenseDtoContract();
+            var validationResult = validation.Validate(this);
 
-            //AddNotifications(validationResult);
+            AddNotifications(validationResult);
         }
     }
 }
