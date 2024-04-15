@@ -33,7 +33,7 @@ namespace ExpensesManager.Application.Services
             var verifyPassword = BCrypt.Net.BCrypt.Verify(loginRequestViewModel.Password, user.Password);
             if (!verifyPassword)
             {
-                _notificationContext.AddNotification("Erro", "Invalid user or password");
+                _notificationContext.AddNotification("User", "Invalid user or password");
                 return default!;
             }
 
