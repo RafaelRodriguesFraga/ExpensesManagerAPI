@@ -1,6 +1,5 @@
-using ExpensesManager.Domain.Entities;
 
-namespace ExpensesManager.Application.ViewModels
+namespace ExpensesManager.Application.ViewModels.User
 {
     public class UserViewModel
     {
@@ -12,7 +11,7 @@ namespace ExpensesManager.Application.ViewModels
         public Guid Id {get; set;}
         public string Email { get; set; }
 
-        public static implicit operator UserViewModel(User user)
+        public static implicit operator UserViewModel(Domain.Entities.User user)
         {
             return new UserViewModel(user.Id, user.Email);
         }
