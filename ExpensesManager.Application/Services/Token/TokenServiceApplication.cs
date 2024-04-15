@@ -5,6 +5,7 @@ using System.Text;
 using DotnetBaseKit.Components.Application.Base;
 using DotnetBaseKit.Components.Shared.Notifications;
 using expensesManager.Application.Services;
+using ExpensesManager.Application.ViewModels.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,7 +20,7 @@ namespace ExpensesManager.Application.Services.Token
             _configuration = configuration;
         }
 
-        public TokenViewModel GenerateTokenAsync(Guid id, string email)
+        public TokenViewModel GenerateTokenAsync(UserViewModel userViewModel)
         {
             var secret = _configuration.GetSection("TokenSettings:Secret").Value;
             var expiresToken = _configuration.GetSection("TokenSettings:ExpiresToken").Value;
@@ -42,8 +43,8 @@ namespace ExpensesManager.Application.Services.Token
                 Expires = date.AddHours(Convert.ToInt32(expiresToken) | 2),
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Email, email),
-                    new Claim(JwtRegisteredClaimNames.Jti, id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, userViewModel.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, userViewModel.Id.ToString()),
 
                 }),
                 SigningCredentials = new SigningCredentials(
@@ -57,8 +58,8 @@ namespace ExpensesManager.Application.Services.Token
 
             TokenViewModel tokenViewModel = new TokenViewModel
             {
-                Id = id,
-                Email = email,
+                Id = userViewModel.Id,
+                Email = userViewModel.Email,
                 Token = token,
                 ExpirationDate = tokenDescriptor.Expires.Value,
                 IssuedAt = tokenDescriptor.IssuedAt.Value,

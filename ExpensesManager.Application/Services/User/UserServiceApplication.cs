@@ -1,6 +1,8 @@
 using DotnetBaseKit.Components.Application.Base;
 using DotnetBaseKit.Components.Shared.Notifications;
 using ExpensesManager.Application.Services.User;
+using ExpensesManager.Application.ViewModels.Login;
+using ExpensesManager.Application.ViewModels.User;
 using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Repositories;
 
@@ -15,6 +17,27 @@ namespace ExpensesManager.Application.Services
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
+        }
+
+        public async Task<UserViewModel> AuthenticateAsync(LoginRequestViewModel loginRequestViewModel)
+        {
+            var user = await _readRepository.GetByEmaillAsync(loginRequestViewModel.Email);
+
+             var userNotFound = user == null;
+            if (userNotFound)
+            {
+                _notificationContext.AddNotification("Erro", "User not found");
+                return default!;
+            }
+
+            var verifyPassword = BCrypt.Net.BCrypt.Verify(loginRequestViewModel.Password, user.Password);
+            if (!verifyPassword)
+            {
+                _notificationContext.AddNotification("Erro", "Invalid user or password");
+                return default!;
+            }
+
+            return user;
         }
 
         public async Task CreateAsync(UserRequestDto userRequestDto)
