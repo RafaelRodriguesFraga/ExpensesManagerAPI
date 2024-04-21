@@ -1,6 +1,8 @@
 using DotnetBaseKit.Components.Api.Base;
 using DotnetBaseKit.Components.Api.Responses;
+using ExpensesManager.Application.Login;
 using ExpensesManager.Application.Services;
+using ExpensesManager.Application.Services.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TestApi.Api.Controllers
@@ -10,22 +12,27 @@ namespace TestApi.Api.Controllers
     public class AuthController : ApiControllerBase
     {
         private readonly ITokenServiceApplication _tokenServiceApplication;
+        private readonly IUserServiceApplication _userServiceApplication;
 
-        public AuthController(IResponseFactory responseFactory, ITokenServiceApplication tokenServiceApplication) : base(responseFactory)
+        public AuthController(IResponseFactory responseFactory, ITokenServiceApplication tokenServiceApplication, IUserServiceApplication userServiceApplication) : base(responseFactory)
         {
             _tokenServiceApplication = tokenServiceApplication;
+            _userServiceApplication = userServiceApplication;
         }
 
-        [HttpPost("test-login")]
-        public IActionResult Login()
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync(LoginRequestViewModel loginViewModel)
         {
+            var authenticateUser = await _userServiceApplication.AuthenticateAsync(loginViewModel);
+            var userIsNull = authenticateUser == null;
+            if(userIsNull)
+            {
+                return ResponseBadRequest(authenticateUser);
+            }
 
-            var id = Guid.NewGuid();
-            var email = "test@test.com";
+           var token = _tokenServiceApplication.GenerateTokenAsync(authenticateUser);
 
-            var token = _tokenServiceApplication.GenerateTokenAsync(id, email);
-
-            return ResponseCreated(token);
+            return ResponseOk(token);
         }
     }
 }
