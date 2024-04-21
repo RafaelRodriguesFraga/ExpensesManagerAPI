@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using ExpensesManager.Application.Services.Person;
+using ExpensesManager.Infra.IoC;
+using ListaComprasApi.Infra.CrossCutting.IoC;
 
 namespace ExpensesManager.Api
 {
@@ -38,7 +40,7 @@ namespace ExpensesManager.Api
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below. \r\n\r\nExample: \"Bearer 12345abcdef\"",
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below. \r\n\r\nExample: \"Bearer 12345abcdef\"",                    
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement 
@@ -50,16 +52,19 @@ namespace ExpensesManager.Api
                               { 
                                   Type = ReferenceType.SecurityScheme, 
                                   Id = "Bearer" 
-                              } 
+                              },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
                           }, 
-                         new string[] {} 
+                         new List<string>()
                     } 
                 });
             });            
             services.AddControllers();
 
-            var secret = Configuration.GetSection("TokenSettings:Secret");
-            var key = Encoding.ASCII.GetBytes(secret.Value);
+            var secret = Configuration.GetSection("TokenSettings:Secret").Value;
+            var key = Encoding.ASCII.GetBytes(secret);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(x =>
@@ -75,27 +80,17 @@ namespace ExpensesManager.Api
                     };
                 });
 
-
-            // Boilerplate Dependencies
+            // BaseKit Dependencies
             services.AddApi();
             services.AddApplication();
 
             services.AddAutoMapper(typeof(Startup));
-
-            services.AddScoped<ITokenServiceApplication, TokenServiceApplication>();
-            services.AddScoped<IUserReadRepository, UserReadRepository>();
-            services.AddScoped<IUserWriteRepository, UserWriteRepository>();
-            services.AddScoped<IUserServiceApplication, UserServiceApplication>();
-            services.AddScoped<IPersonServiceApplication, PersonServiceApplication>();
-            services.AddScoped<IPersonWriteRepository, PersonWriteRepository>();
-            services.AddScoped<IPersonReadRepository, PersonReadRepository>();
-
-
+            services.AddServices();
+            services.AddRepositories();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
         {
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
