@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExpensesManager.Application.Login
+namespace ExpensesManager.Application.ViewModels.Login
 {
     public class LoginRequestViewModel
     {
