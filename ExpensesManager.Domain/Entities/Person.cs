@@ -19,6 +19,7 @@ namespace ExpensesManager.Domain.Entities
         public string Name { get; private set; }
         public Guid UserId { get; private set; }
         public User User { get; private set; }
+        public ICollection<Expense> Expenses { get; private set; }
 
         public static implicit operator Person(PersonDto personDto)
         {
