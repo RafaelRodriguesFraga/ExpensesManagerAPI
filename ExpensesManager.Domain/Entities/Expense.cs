@@ -11,7 +11,7 @@ namespace ExpensesManager.Domain.Entities
     {
         public Expense() { }
 
-        public Expense(string creditCardName, string description, decimal price, DateTime purchaseDate, string invoiceMonth, bool isInstallment, bool paid)
+        public Expense(string creditCardName, string description, decimal price, DateTime purchaseDate, string invoiceMonth, bool isInstallment, bool paid, Guid personGuid)
         {
             CreditCardName = creditCardName;
             Description = description;
@@ -20,6 +20,7 @@ namespace ExpensesManager.Domain.Entities
             InvoiceMonth = invoiceMonth;
             IsInstallment = isInstallment;
             Paid = paid;
+            PersonId = personGuid;
         }
 
         public string CreditCardName { get; private set; }
@@ -41,7 +42,8 @@ namespace ExpensesManager.Domain.Entities
                  expenseDto.PurchaseDate,
                  expenseDto.InvoiceMonth,
                  expenseDto.IsInstallment,
-                 expenseDto.Paid
+                 expenseDto.Paid,
+                 expenseDto.PersonId
                  );
         }
 
