@@ -1,6 +1,6 @@
 using DotnetBaseKit.Components.Api.Base;
 using DotnetBaseKit.Components.Api.Responses;
-using ExpensesManager.Application.Login;
+using ExpensesManager.Application.ViewModels.Login;
 using ExpensesManager.Application.Services;
 using ExpensesManager.Application.Services.User;
 using Microsoft.AspNetCore.Mvc;

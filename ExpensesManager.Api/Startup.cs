@@ -14,6 +14,7 @@ using System.Text;
 using ExpensesManager.Application.Services.Person;
 using ExpensesManager.Infra.IoC;
 using ListaComprasApi.Infra.CrossCutting.IoC;
+using ExpensesManager.Application.Mappers;
 
 namespace ExpensesManager.Api
 {
@@ -84,7 +85,7 @@ namespace ExpensesManager.Api
             services.AddApi();
             services.AddApplication();
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(EntityToViewModelMapper));
             services.AddServices();
             services.AddRepositories();
         }

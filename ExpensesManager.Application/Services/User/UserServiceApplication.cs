@@ -1,7 +1,7 @@
 using DotnetBaseKit.Components.Application.Base;
 using DotnetBaseKit.Components.Shared.Notifications;
-using ExpensesManager.Application.Login;
 using ExpensesManager.Application.Services.User;
+using ExpensesManager.Application.ViewModels.Login;
 using ExpensesManager.Application.ViewModels.User;
 using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Repositories;
