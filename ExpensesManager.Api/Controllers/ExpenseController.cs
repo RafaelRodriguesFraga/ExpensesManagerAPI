@@ -18,13 +18,23 @@ namespace ExpensesManager.Api.Controllers
         {
             _expensesServiceApplication = expensesServiceApplication;
         }
-
+      
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] ExpenseDto expensesDto)
         {
             await _expensesServiceApplication.CreateAsync(expensesDto);
 
             return ResponseCreated();
-        }       
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllGroupByPurchaseDate([FromQuery] string invoiceMonth)
+        {
+
+            var expenses = await _expensesServiceApplication.GetAllGroupByPurchaseDateAsync(invoiceMonth);
+
+            return ResponseOk(expenses);
+        }
+
     }
 }

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using ExpensesManager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,37 +15,59 @@ namespace ExpensesManager.Infra.Configurations
             builder.ToTable("expenses");
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id)
+                .IsRequired()            
+                .HasColumnName("id");
+
             builder.Property(x => x.CreatedAt)
                 .IsRequired()
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+;
 
             builder.Property(x => x.CreditCardName)
                 .HasMaxLength(100)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("credit_card_name");
+;
 
             builder.Property(x => x.Description)                
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("description");
+;
             
             builder.Property(x => x.Price)                       
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("price");
+;
             
             builder.Property(x => x.PurchaseDate)                       
                 .IsRequired()
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("purchase_date");
 
             builder.Property(x => x.InvoiceMonth)                       
                 .IsRequired()
-                .HasMaxLength(10);
+                .HasMaxLength(10)
+                .HasColumnName("invoice_month");;
               
             builder.Property(x => x.IsInstallment)                       
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("is_installment");
 
             builder.Property(x => x.Paid)                       
-                .IsRequired();
+                .IsRequired()
+                .HasColumnName("paid");
+
+            builder.Property(x => x.PersonId)                       
+                .IsRequired()
+                .HasColumnName("person_id");
 
             builder.HasOne(x => x.Person)
                 .WithMany(x => x.Expenses)
-                .HasForeignKey(expense => expense.PersonId);
+                .HasForeignKey(expense => expense.PersonId)                
+                .HasConstraintName("person_id");
+
         }
     }
 }

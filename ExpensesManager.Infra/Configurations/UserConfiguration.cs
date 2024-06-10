@@ -14,20 +14,24 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Ignore(entity => entity.Invalid);
 
         builder.ToTable("users");
-        builder.HasKey(x => x.Id);
+        builder.HasKey(x => x.Id).HasName("id");
+
+        builder.Property(x => x.Id)
+                .IsRequired()            
+                .HasColumnName("id");
 
         builder.Property(x => x.CreatedAt)
             .IsRequired()
-            .HasColumnType("timestamp without time zone");
+            .HasColumnType("timestamp without time zone")
+            .HasColumnName("created_at");
 
         builder.Property(x => x.Email)
             .HasMaxLength(100)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnName("email");
 
         builder.Property(x => x.Password)
-            .IsRequired();
-
-        builder.HasIndex(u => u.Email)
-            .IsUnique();
+            .IsRequired()
+            .HasColumnName("password");    
     }
 }

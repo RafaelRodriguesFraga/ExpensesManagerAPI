@@ -13,13 +13,18 @@ namespace ExpensesManager.Infra.Repositories
         {
         }
 
-        public async Task<IEnumerable<IGrouping<DateTime, Expense>>> GetAllGroupByDateAsync()
+        public async Task<Dictionary<string, IEnumerable<Expense>>> GetAllGroupByPurchaseDateAsync(string invoiceMonth)
         {
-            return await Set
-                .AsNoTracking()
-                .Include(e => e.Person)
-                .GroupBy(e => e.PurchaseDate.Date)            
+            var expenses = await Set
+                .AsNoTracking()    
+                .Where(x => x.InvoiceMonth == invoiceMonth)           
                 .ToListAsync();
+
+            var grouped = expenses
+                .GroupBy(e => e.PurchaseDate.Date)
+                .ToDictionary(g => g.Key.ToString("dd/MM/yyyy"), g => g.ToList().AsEnumerable());
+
+            return grouped;
         }
 
         public async Task<IEnumerable<Expense>> GetByCreditCardNameAsync(string credtCardName)
