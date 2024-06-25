@@ -44,7 +44,7 @@ namespace ExpensesManager.Application.Services.Token
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(JwtRegisteredClaimNames.Email, userViewModel.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, userViewModel.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, userViewModel.Id.ToString()),
 
                 }),
                 SigningCredentials = new SigningCredentials(
