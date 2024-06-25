@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using DotnetBaseKit.Components.Api.Base;
 using DotnetBaseKit.Components.Api.Responses;
 using ExpensesManager.Application.Services.Person;
@@ -26,10 +27,15 @@ namespace ExpensesManager.Api.Controllers
             return ResponseCreated();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllAsync([FromQuery] int page, [FromQuery] int quantityPerPage)
+        [HttpGet("{userId:guid}")]
+        public async Task<IActionResult> GetAllAsync(Guid userId, [FromQuery] int page, [FromQuery] int quantityPerPage)
         {
-            var people = await _personServiceApplication.GetAllPaginatedAsync(page, quantityPerPage);
+            var loggedUser = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            if (loggedUser != userId)
+            {
+                return Forbid();
+            }
+            var people = await _personServiceApplication.GetAllPaginatedAsync(userId, page, quantityPerPage);
 
             return ResponseOk(people);
         }
