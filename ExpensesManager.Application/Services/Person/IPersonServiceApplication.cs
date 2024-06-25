@@ -15,7 +15,7 @@ namespace ExpensesManager.Application.Services.Person
         Task<PersonViewModel> GetByIdAsync(Guid id);
         Task<PersonViewModel> GetByNameAsync(string name);
         Task<IEnumerable<PersonViewModel>> GetAllAsync();
-        Task<PaginationResponse<PersonViewModel>> GetAllPaginatedAsync(int page, int quantityPerPage);
+        Task<PaginationResponse<PersonViewModel>> GetAllPaginatedAsync(Guid id, int page, int quantityPerPage);
     }
 
 

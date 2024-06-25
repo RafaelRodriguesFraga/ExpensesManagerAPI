@@ -20,6 +20,21 @@ namespace ExpensesManager.Infra.Repositories
                 .Where(p => p.Name == name)
                 .FirstOrDefaultAsync();
         }
+        public async Task<(IEnumerable<Person> result, int totalRecords)> GetAllAsync(Guid userId, int page, int quantityPerPage)
+        {
+            var skip = page == 1 ? 0 : (page - 1) * quantityPerPage;
+
+            var totalRecords = Set.Count();
+
+            var result = await Set
+                .Where(x => x.UserId == userId)   
+                .Skip(skip)
+                .Take(quantityPerPage)
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
+
+            return (result, totalRecords);
+        }
     }
 }
 

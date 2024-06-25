@@ -42,9 +42,9 @@ namespace ExpensesManager.Application.Services.Person
             return personViewModelList;
         }
 
-        public async Task<PaginationResponse<PersonViewModel>> GetAllPaginatedAsync(int page, int quantityPerPage)
+        public async Task<PaginationResponse<PersonViewModel>> GetAllPaginatedAsync(Guid userId, int page, int quantityPerPage)
         {
-            var (people, totalRecords) = await _personReadRepository.GetAllPaginatedAsync(page, quantityPerPage);
+            var (people, totalRecords) = await _personReadRepository.GetAllAsync(userId, page, quantityPerPage);
 
             var personViewModelList = _mapper.Map<IEnumerable<PersonViewModel>>(people);
 
