@@ -27,7 +27,7 @@ namespace ExpensesManager.Api.Controllers
             return ResponseCreated();
         }
 
-        [HttpGet("{userId:guid}")]
+        [HttpGet("userId/{userId:guid}")]
         public async Task<IActionResult> GetAllAsync(Guid userId, [FromQuery] int page, [FromQuery] int quantityPerPage)
         {
             var loggedUser = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
