@@ -13,7 +13,7 @@ namespace ExpensesManager.Application.Services.Person
     {
         Task CreateAsync(PersonDto person);
         Task<PersonViewModel> GetByIdAsync(Guid id);
-        Task<PersonViewModel> GetByNameAsync(string name);
+        Task<IEnumerable<PersonViewModel>> GetByNameAsync(string name);
         Task<IEnumerable<PersonViewModel>> GetAllAsync();
         Task<PaginationResponse<PersonViewModel>> GetAllPaginatedAsync(Guid id, int page, int quantityPerPage);
     }
