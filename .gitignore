@@ -20,3 +20,9 @@ ExpensesManager.Api/appsettings.Development.json
 /Api/obj
 /ExpensesManager.Infra.IoC/obj
 /ExpensesManager.Infra.IoC/bin/Debug/net6.0
+.idea/.idea.expenses-manager-api/.idea/vcs.xml
+.idea/.idea.expenses-manager-api/.idea/indexLayout.xml
+.idea/.idea.expenses-manager-api/.idea/encodings.xml
+.idea/.idea.expenses-manager-api/.idea/.name
+.idea/.idea.expenses-manager-api/.idea/workspace.xml
+.idea/.idea.expenses-manager-api/.idea/projectSettingsUpdater.xml

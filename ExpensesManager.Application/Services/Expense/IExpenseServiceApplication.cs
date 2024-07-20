@@ -11,7 +11,8 @@ namespace ExpensesManager.Application.Services.Expense
     public interface IExpenseServiceApplication : IBaseServiceApplication
     {
         Task CreateAsync(ExpenseDto expenseDto);
-        Task<Dictionary<string, IEnumerable<ExpenseViewModel>>> GetAllGroupByPurchaseDateAsync(string invoiceMonth);
+        Task<IEnumerable<ExpenseViewModel>> GetAllAsync(Guid personId);
+        Task<Dictionary<string, IEnumerable<ExpenseViewModel>>> GetAllGroupByPurchaseDateAsync(Guid personId, string invoiceMonth);
 
     }
 }

@@ -26,12 +26,21 @@ namespace ExpensesManager.Api.Controllers
 
             return ResponseCreated();
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllGroupByPurchaseDate([FromQuery] string invoiceMonth)
+        
+        [HttpGet("{personId:guid}")]
+        public async Task<IActionResult> GetAllAsync([FromRoute] Guid personId)
         {
 
-            var expenses = await _expensesServiceApplication.GetAllGroupByPurchaseDateAsync(invoiceMonth);
+            var expenses = await _expensesServiceApplication.GetAllAsync(personId);
+            
+            return ResponseOk(expenses);
+        }
+
+        [HttpGet("personId/{personId:guid}")]
+        public async Task<IActionResult> GetAllGroupByPurchaseDate([FromRoute] Guid personId, [FromQuery] string invoiceMonth)
+        {
+
+            var expenses = await _expensesServiceApplication.GetAllGroupByPurchaseDateAsync(personId, invoiceMonth);
 
             return ResponseOk(expenses);
         }

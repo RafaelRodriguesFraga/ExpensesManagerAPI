@@ -13,11 +13,21 @@ namespace ExpensesManager.Infra.Repositories
         {
         }
 
-        public async Task<Dictionary<string, IEnumerable<Expense>>> GetAllGroupByPurchaseDateAsync(string invoiceMonth)
+        public async Task<IEnumerable<Expense>> GetAllAsync(Guid personId)
+        {
+            var expenses = await Set
+                .AsNoTracking()
+                .Where(x => x.PersonId == personId)
+                .ToListAsync();
+
+            return expenses;
+        }
+
+        public async Task<Dictionary<string, IEnumerable<Expense>>> GetAllGroupByPurchaseDateAsync(Guid personId, string invoiceMonth)
         {
             var expenses = await Set
                 .AsNoTracking()    
-                .Where(x => x.InvoiceMonth == invoiceMonth)           
+                .Where(x => x.InvoiceMonth == invoiceMonth && x.PersonId == personId)           
                 .ToListAsync();
 
             var grouped = expenses
@@ -25,6 +35,22 @@ namespace ExpensesManager.Infra.Repositories
                 .ToDictionary(g => g.Key.ToString("dd/MM/yyyy"), g => g.ToList().AsEnumerable());
 
             return grouped;
+        }
+
+        public Task CalculateTotal(Guid personId)
+        {
+            var expenses = Set
+                .AsNoTracking()
+                .Where(x => x.PersonId == personId)
+                .GroupBy(x => x.InvoiceMonth)
+                .Select(g => new
+                {
+                    InvoiceMonth = g.Key,
+                    TotalPrice = g.Sum(e => e.Price)
+                })
+                .ToListAsync();
+                
+            return expenses;
         }
 
         public async Task<IEnumerable<Expense>> GetByCreditCardNameAsync(string credtCardName)

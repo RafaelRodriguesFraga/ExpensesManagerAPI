@@ -33,9 +33,17 @@ namespace ExpensesManager.Application.Services.Expense
 
         }
 
-        public async Task<Dictionary<string, IEnumerable<ExpenseViewModel>>> GetAllGroupByPurchaseDateAsync(string invoiceMonth)
+        public async Task<IEnumerable<ExpenseViewModel>> GetAllAsync(Guid personId)
         {
-            var expenses = await _readRepository.GetAllGroupByPurchaseDateAsync(invoiceMonth);
+            var expenses = await _readRepository.GetAllAsync(personId);
+            var expenseViewModelList = _mapper.Map<IEnumerable<ExpenseViewModel>>(expenses);
+
+            return expenseViewModelList;
+        }
+        
+        public async Task<Dictionary<string, IEnumerable<ExpenseViewModel>>> GetAllGroupByPurchaseDateAsync(Guid personId, string invoiceMonth)
+        {
+            var expenses = await _readRepository.GetAllGroupByPurchaseDateAsync(personId, invoiceMonth);
 
             var expenseViewModelDict = new Dictionary<string, IEnumerable<ExpenseViewModel>>();
 
