@@ -21,7 +21,8 @@ namespace ExpensesManager.Infra.Context
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new PersonConfiguration());
             modelBuilder.ApplyConfiguration(new ExpenseConfiguration());
-            
+            modelBuilder.ApplyConfiguration(new CreditCardConfiguration());
+
         }
     }
 }
