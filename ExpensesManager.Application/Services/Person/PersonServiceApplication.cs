@@ -63,15 +63,12 @@ namespace ExpensesManager.Application.Services.Person
             return person;
         }
 
-        public async Task<PersonViewModel> GetByNameAsync(string name)
+        public async Task<IEnumerable<PersonViewModel>> GetByNameAsync(string name)
         {
-            var person = await _personReadRepository.GetByNameAsync(name);
-            if (person == null)
-            {
-                _notificationContext.AddNotification("Error", "Person not found");
-                return default!;
-            }
-            return person;
+            var people = await _personReadRepository.GetByNameAsync(name);
+            var personViewModelList = _mapper.Map<IEnumerable<PersonViewModel>>(people);
+            
+            return personViewModelList;
         }
     }
 }

@@ -12,13 +12,14 @@ namespace ExpensesManager.Infra.Repositories
         {
         }
 
-        public async Task<Person> GetByNameAsync(string name)
+        public async Task<IEnumerable<Person>> GetByNameAsync(string name)
         {
              return await Set
                 .AsNoTracking()
                 .Include(p => p.User)
-                .Where(p => p.Name == name)
-                .FirstOrDefaultAsync();
+                .Where(p => p.Name.ToLower().Contains(name.ToLower()))
+                .OrderBy(x => x.Name)
+                .ToListAsync();
         }
         public async Task<(IEnumerable<Person> result, int totalRecords)> GetAllAsync(Guid userId, int page, int quantityPerPage)
         {

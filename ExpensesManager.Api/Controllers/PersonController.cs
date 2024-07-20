@@ -40,8 +40,8 @@ namespace ExpensesManager.Api.Controllers
             return ResponseOk(people);
         }
 
-        [HttpGet("{name}")]
-        public async Task<IActionResult> GetByNameAsync([FromRoute] string name)
+        [HttpGet]
+        public async Task<IActionResult> GetByNameAsync([FromQuery] string name)
         {
             var person = await _personServiceApplication.GetByNameAsync(name);
 
