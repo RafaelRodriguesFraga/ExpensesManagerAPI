@@ -37,10 +37,10 @@ namespace ExpensesManager.Api.Controllers
         }
 
         [HttpGet("personId/{personId:guid}")]
-        public async Task<IActionResult> GetAllGroupByPurchaseDate([FromRoute] Guid personId, [FromQuery] string invoiceMonth)
+        public async Task<IActionResult> GetAllGroupByPurchaseDate([FromRoute] Guid personId, [FromQuery] Guid invoiceMonthId)
         {
 
-            var expenses = await _expensesServiceApplication.GetAllGroupByPurchaseDateAsync(personId, invoiceMonth);
+            var expenses = await _expensesServiceApplication.GetAllGroupByPurchaseDateAsync(personId, invoiceMonthId);
 
             return ResponseOk(expenses);
         }

@@ -11,15 +11,14 @@ namespace ExpensesManager.Domain.Entities
     {
         public Expense() { }
 
-        public Expense(string creditCardName, string description, decimal price, DateTime purchaseDate, string invoiceMonth, bool isInstallment, bool paid, Guid personGuid)
+        public Expense(string creditCardName, string description, decimal price, DateTime purchaseDate, Guid invoiceMonthId, bool isInstallment, Guid personGuid)
         {
             CreditCardName = creditCardName;
             Description = description;
             Price = price;
             PurchaseDate = purchaseDate;
-            InvoiceMonth = invoiceMonth;
+            InvoiceMonthId = invoiceMonthId;
             IsInstallment = isInstallment;
-            Paid = paid;
             PersonId = personGuid;
         }
 
@@ -27,10 +26,10 @@ namespace ExpensesManager.Domain.Entities
         public string Description { get; private set; }
         public decimal Price { get; private set; }
         public DateTime PurchaseDate { get; private set; }
-        public string InvoiceMonth { get; private set; }
+        public Guid InvoiceMonthId { get; private set; }
+        public InvoiceMonth InvoiceMonth { get; private set; }
         public bool IsInstallment { get; private set; }
-        public bool Paid { get; private set; }
-        public Guid PersonId { get; private set; }  
+        public Guid PersonId { get; private set; }
         public Person Person { get; private set; }
 
         public static implicit operator Expense(ExpenseDto expenseDto)
@@ -40,9 +39,8 @@ namespace ExpensesManager.Domain.Entities
                  expenseDto.Description,
                  expenseDto.Price,
                  expenseDto.PurchaseDate,
-                 expenseDto.InvoiceMonth,
+                 expenseDto.InvoiceMonthId,
                  expenseDto.IsInstallment,
-                 expenseDto.Paid,
                  expenseDto.PersonId
                  );
         }

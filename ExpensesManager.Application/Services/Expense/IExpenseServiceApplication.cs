@@ -12,7 +12,7 @@ namespace ExpensesManager.Application.Services.Expense
     {
         Task CreateAsync(ExpenseDto expenseDto);
         Task<IEnumerable<ExpenseViewModel>> GetAllAsync(Guid personId);
-        Task<Dictionary<string, IEnumerable<ExpenseViewModel>>> GetAllGroupByPurchaseDateAsync(Guid personId, string invoiceMonth);
+        Task<Dictionary<string, IEnumerable<ExpenseViewModel>>> GetAllGroupByPurchaseDateAsync(Guid personId, Guid invoiceMonthId);
 
     }
 }

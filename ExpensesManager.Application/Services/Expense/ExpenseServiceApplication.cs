@@ -12,7 +12,10 @@ namespace ExpensesManager.Application.Services.Expense
         private readonly IExpenseWriteRepository _writeRepository;
         private readonly IExpenseReadRepository _readRepository;
         private IMapper _mapper;
-        public ExpenseServiceApplication(NotificationContext notificationContext, IExpenseWriteRepository writeRepository, IExpenseReadRepository readRepository, IMapper mapper) : base(notificationContext)
+        public ExpenseServiceApplication(NotificationContext notificationContext,
+            IExpenseWriteRepository writeRepository, 
+            IExpenseReadRepository readRepository,
+            IMapper mapper) : base(notificationContext)
         {
             _writeRepository = writeRepository;
             _readRepository = readRepository;
@@ -41,9 +44,9 @@ namespace ExpensesManager.Application.Services.Expense
             return expenseViewModelList;
         }
         
-        public async Task<Dictionary<string, IEnumerable<ExpenseViewModel>>> GetAllGroupByPurchaseDateAsync(Guid personId, string invoiceMonth)
+        public async Task<Dictionary<string, IEnumerable<ExpenseViewModel>>> GetAllGroupByPurchaseDateAsync(Guid personId, Guid invoiceMonthId)
         {
-            var expenses = await _readRepository.GetAllGroupByPurchaseDateAsync(personId, invoiceMonth);
+            var expenses = await _readRepository.GetAllGroupByPurchaseDateAsync(personId, invoiceMonthId);
 
             var expenseViewModelDict = new Dictionary<string, IEnumerable<ExpenseViewModel>>();
 

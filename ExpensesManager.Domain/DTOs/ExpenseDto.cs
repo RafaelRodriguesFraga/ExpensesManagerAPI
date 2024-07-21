@@ -9,7 +9,7 @@ namespace ExpensesManager.Domain.DTOs
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public DateTime PurchaseDate { get; set; }
-        public string InvoiceMonth { get; set; } = string.Empty;
+        public Guid InvoiceMonthId { get; set; }
         public bool IsInstallment { get; set; }
         public bool Paid { get; set; }
         public Guid PersonId { get; set; }

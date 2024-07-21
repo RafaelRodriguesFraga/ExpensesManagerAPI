@@ -1,5 +1,4 @@
 using ExpensesManager.Domain.DTOs;
-using ExpensesManager.Domain.Entities;
 using FluentValidation;
 
 namespace ExpensesManager.Domain.Validations
@@ -24,9 +23,9 @@ namespace ExpensesManager.Domain.Validations
                 .GreaterThan(DateTime.MinValue)
                 .WithMessage("The purchase date must be after the minimum date.");
 
-            RuleFor(x => x.InvoiceMonth)
+            RuleFor(x => x.InvoiceMonthId)
                 .NotEmpty()
-                .WithMessage("Invoice month cannot be empty.");
+                .WithMessage("Invoice month id cannot be empty.");
 
             RuleFor(x => x.PersonId)
               .NotEmpty()

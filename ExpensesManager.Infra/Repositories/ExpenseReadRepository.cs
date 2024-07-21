@@ -23,11 +23,11 @@ namespace ExpensesManager.Infra.Repositories
             return expenses;
         }
 
-        public async Task<Dictionary<string, IEnumerable<Expense>>> GetAllGroupByPurchaseDateAsync(Guid personId, string invoiceMonth)
+        public async Task<Dictionary<string, IEnumerable<Expense>>> GetAllGroupByPurchaseDateAsync(Guid personId, Guid invoiceMonthId)
         {
             var expenses = await Set
                 .AsNoTracking()    
-                .Where(x => x.InvoiceMonth == invoiceMonth && x.PersonId == personId)           
+                .Where(x => x.InvoiceMonthId == invoiceMonthId && x.PersonId == personId)           
                 .ToListAsync();
 
             var grouped = expenses
@@ -62,12 +62,12 @@ namespace ExpensesManager.Infra.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Expense>> GetByInvoiceMonthAsync(string invoicemonth)
+        public async Task<IEnumerable<Expense>> GetByInvoiceMonthAsync(Guid invoiceMonthId)
         {
             return await Set
                 .AsNoTracking()
                 .Include(e => e.Person)
-                .Where(e => e.InvoiceMonth == invoicemonth)
+                .Where(e => e.InvoiceMonthId == invoiceMonthId)
                 .ToListAsync();
         }
     }
