@@ -1,6 +1,6 @@
-using Azure;
 using DotnetBaseKit.Components.Infra.Sql.Context.Base;
 using DotnetBaseKit.Components.Infra.Sql.Repositories.Base;
+using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -17,48 +17,54 @@ namespace ExpensesManager.Infra.Repositories
         {
             var expenses = await Set
                 .AsNoTracking()
+                .Include(im => im.InvoiceMonth)
                 .Where(x => x.PersonId == personId)
                 .ToListAsync();
 
             return expenses;
         }
 
-        public async Task<Dictionary<string, IEnumerable<Expense>>> GetAllGroupByPurchaseDateAsync(Guid personId, Guid invoiceMonthId)
+        public async Task<Dictionary<string, IEnumerable<Expense>>> GetAllGroupByPurchaseDateAsync(Guid personId, string invoiceMonth)
         {
             var expenses = await Set
-                .AsNoTracking()    
-                .Where(x => x.InvoiceMonthId == invoiceMonthId && x.PersonId == personId)           
+                .AsNoTracking()   
+                .Include(im => im.InvoiceMonth) 
+                .Where(x => x.InvoiceMonth.Name == invoiceMonth && x.PersonId == personId)           
                 .ToListAsync();
 
             var grouped = expenses
                 .GroupBy(e => e.PurchaseDate.Date)
+                .OrderByDescending(g => g.Key)
                 .ToDictionary(g => g.Key.ToString("dd/MM/yyyy"), g => g.ToList().AsEnumerable());
 
             return grouped;
         }
 
-        public Task CalculateTotal(Guid personId)
+        public async Task<IEnumerable<TotalExpenseDto>> CalculateTotal(Guid personId)
         {
-            var expenses = Set
+            var expenses = await Set
                 .AsNoTracking()
+                .Include(x => x.InvoiceMonth)
                 .Where(x => x.PersonId == personId)
-                .GroupBy(x => x.InvoiceMonth)
-                .Select(g => new
+                .GroupBy(e => new { e.InvoiceMonth.Name, e.InvoiceMonth.Code }) 
+                .Select(g => new TotalExpenseDto
                 {
-                    InvoiceMonth = g.Key,
-                    TotalPrice = g.Sum(e => e.Price)
+                    InvoiceMonth = g.Key.Name,
+                    TotalPrice = g.Sum(e => e.Price),
+                    Code = g.Key.Code
                 })
+                .OrderBy(g => g.Code)
                 .ToListAsync();
-                
+           
             return expenses;
         }
 
-        public async Task<IEnumerable<Expense>> GetByCreditCardNameAsync(string credtCardName)
+        public async Task<IEnumerable<Expense>> GetByCreditCardNameAsync(string creditCardName)
         {
             return await Set
                 .AsNoTracking()
                 .Include(e => e.Person)
-                .Where(e => e.CreditCardName == credtCardName)
+                .Where(e => e.CreditCardName == creditCardName)
                 .ToListAsync();
         }
 
