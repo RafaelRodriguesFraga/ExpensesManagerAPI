@@ -1,7 +1,6 @@
 using DotnetBaseKit.Components.Api.Base;
 using DotnetBaseKit.Components.Api.Responses;
 using ExpensesManager.Application.Services.Expense;
-using ExpensesManager.Application.Services.Person;
 using ExpensesManager.Domain.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,10 +36,19 @@ namespace ExpensesManager.Api.Controllers
         }
 
         [HttpGet("personId/{personId:guid}")]
-        public async Task<IActionResult> GetAllGroupByPurchaseDate([FromRoute] Guid personId, [FromQuery] Guid invoiceMonthId)
+        public async Task<IActionResult> GetAllGroupByPurchaseDate([FromRoute] Guid personId, [FromQuery] string invoiceMonth)
         {
 
-            var expenses = await _expensesServiceApplication.GetAllGroupByPurchaseDateAsync(personId, invoiceMonthId);
+            var expenses = await _expensesServiceApplication.GetAllGroupByPurchaseDateAsync(personId, invoiceMonth);
+    
+            return ResponseOk(expenses);
+        }
+        
+        [HttpGet("totalByMonth")]
+        public async Task<IActionResult> GetTotalByMonth([FromQuery] Guid personId)
+        {
+
+            var expenses = await _expensesServiceApplication.GetTotalByMonth(personId);
 
             return ResponseOk(expenses);
         }
