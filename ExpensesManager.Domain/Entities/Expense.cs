@@ -34,15 +34,15 @@ namespace ExpensesManager.Domain.Entities
 
         public static implicit operator Expense(ExpenseDto expenseDto)
         {
-            return new Expense(
-                 expenseDto.CreditCardName,
-                 expenseDto.Description,
-                 expenseDto.Price,
-                 expenseDto.PurchaseDate,
-                 expenseDto.InvoiceMonthId,
-                 expenseDto.IsInstallment,
-                 expenseDto.PersonId
-                 );
+            return new Expense{
+                CreditCardName = expenseDto.CreditCardName,
+                Description = expenseDto.Description,
+                Price = expenseDto.Price,
+                PurchaseDate = expenseDto.PurchaseDate,
+                InvoiceMonthId = expenseDto.InvoiceMonthId,
+                IsInstallment = expenseDto.IsInstallment,
+                PersonId = expenseDto.PersonId
+            };
         }
 
         public override void Validate()
