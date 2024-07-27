@@ -10,7 +10,11 @@ namespace ExpensesManager.Application.Mappers
         public EntityToViewModelMapper()
         {
             CreateMap<Person, PersonViewModel>();
-            CreateMap<Expense, ExpenseViewModel>();                         
+
+            CreateMap<Expense, ExpenseViewModel>()
+                .ForMember(dest => dest.InvoiceMonth, opt => opt.MapFrom(src => src.InvoiceMonth.Name));
+            CreateMap<Expense, ExpenseGroupByPurchaseDateViewModel>()
+               .ForMember(dest => dest.InvoiceMonth, opt => opt.MapFrom(src => src.InvoiceMonth.Name));
         }
     }
 }
