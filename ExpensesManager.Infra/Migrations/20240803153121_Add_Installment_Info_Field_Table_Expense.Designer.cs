@@ -3,6 +3,7 @@ using System;
 using ExpensesManager.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpensesManager.Infra.Migrations
 {
     [DbContext(typeof(ExpensesManagerContext))]
-    partial class ExpensesManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20240803153121_Add_Installment_Info_Field_Table_Expense")]
+    partial class Add_Installment_Info_Field_Table_Expense
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

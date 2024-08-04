@@ -3,6 +3,7 @@ using System;
 using ExpensesManager.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpensesManager.Infra.Migrations
 {
     [DbContext(typeof(ExpensesManagerContext))]
-    partial class ExpensesManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20240803151901_Add_Installment_Fields_Table_Expense")]
+    partial class Add_Installment_Fields_Table_Expense
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,38 +48,38 @@ namespace ExpensesManager.Infra.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("785def09-3d00-423c-a934-5a2c1525fb63"),
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(600),
+                            Id = new Guid("bbafbe9e-439c-4fba-aa54-5d86a13ec63a"),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9170),
                             Name = "Inter Gold"
                         },
                         new
                         {
-                            Id = new Guid("6417b0e1-9e86-40ac-9d12-978c5f7db2e1"),
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(630),
+                            Id = new Guid("198bbd24-c87e-449d-af32-a6533d9a160e"),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9200),
                             Name = "Inter Black"
                         },
                         new
                         {
-                            Id = new Guid("0b86cf26-5b64-4993-b5c7-34fa2ad10e50"),
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(640),
+                            Id = new Guid("146a4c2e-29e3-4d8b-a33d-01048d81bb5f"),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9210),
                             Name = "Amex TGC"
                         },
                         new
                         {
-                            Id = new Guid("acec67d8-1cc3-4ad2-8a12-6392d57aa685"),
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(650),
+                            Id = new Guid("abcb4bb5-9955-4a5f-af6c-19c4185dc28e"),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9220),
                             Name = "XP Visa Infinite"
                         },
                         new
                         {
-                            Id = new Guid("d7a0e997-bfca-439b-bc05-c0d87bdde42d"),
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(650),
+                            Id = new Guid("d26e8643-67e9-4ebd-b535-5283eab6996b"),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9230),
                             Name = "BB Elo Mais"
                         },
                         new
                         {
-                            Id = new Guid("9c62eebf-125a-47f6-babc-17e56c88aef8"),
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(660),
+                            Id = new Guid("c2a23e50-89eb-4ae1-b58f-c6889667b47d"),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9240),
                             Name = "C6 Bank Standard"
                         });
                 });
@@ -106,11 +109,6 @@ namespace ExpensesManager.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
-
-                    b.Property<string>("InstallmentInfo")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("installment_info");
 
                     b.Property<decimal>("InstallmentPrice")
                         .HasColumnType("numeric")
@@ -177,86 +175,86 @@ namespace ExpensesManager.Infra.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f4371cca-b3e9-49d6-aacf-c1b99bb63caa"),
+                            Id = new Guid("77a5f79c-b979-4361-bfb1-c82cf2c8c29e"),
                             Code = 1,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1300),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9880),
                             Name = "Janeiro"
                         },
                         new
                         {
-                            Id = new Guid("cf143b5b-d705-4e46-b88c-8c5aa59fc9bc"),
+                            Id = new Guid("05e2736f-d70d-48ff-9b82-77e07a9f202f"),
                             Code = 2,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1310),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9890),
                             Name = "Fevereiro"
                         },
                         new
                         {
-                            Id = new Guid("58a0cfe2-0a5e-42cd-a2a7-1515831b068b"),
+                            Id = new Guid("830758d0-acb5-4066-8c73-d9bc805d86aa"),
                             Code = 3,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1310),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9900),
                             Name = "Marco"
                         },
                         new
                         {
-                            Id = new Guid("498732b2-31ae-410b-9ce0-c436d31be794"),
+                            Id = new Guid("df265a81-89f7-4cb6-8b4c-21e8cb946989"),
                             Code = 4,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1320),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9900),
                             Name = "Abril"
                         },
                         new
                         {
-                            Id = new Guid("0325e053-cbcc-492b-b268-f7bcbd0fbacc"),
+                            Id = new Guid("60b63973-40ec-47b8-afa3-aa0faba522df"),
                             Code = 5,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1330),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9910),
                             Name = "Maio"
                         },
                         new
                         {
-                            Id = new Guid("4605c82b-4ef1-40a1-baaa-4646c4bb4dff"),
+                            Id = new Guid("8f78f625-e55c-46b5-ba8c-32c05775a832"),
                             Code = 6,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1340),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9920),
                             Name = "Junho"
                         },
                         new
                         {
-                            Id = new Guid("42caa6f7-8fee-479a-ad6b-89fc85f89e6b"),
+                            Id = new Guid("4caa05c0-e965-452a-a567-4682533eb9c8"),
                             Code = 7,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1340),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9930),
                             Name = "Julho"
                         },
                         new
                         {
-                            Id = new Guid("eec7fa31-e1d7-49a8-a179-23900b7ff6af"),
+                            Id = new Guid("701347ac-c63b-46f1-a28e-7b6ace293f84"),
                             Code = 8,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1350),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9930),
                             Name = "Agosto"
                         },
                         new
                         {
-                            Id = new Guid("253c382a-d5d4-4a0f-97d1-7bc582795caf"),
+                            Id = new Guid("99f51a2c-550f-4051-9ce0-148dd7a7d762"),
                             Code = 9,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1360),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9940),
                             Name = "Setembro"
                         },
                         new
                         {
-                            Id = new Guid("3176f263-02e6-40ae-a0d8-8bb770c5d581"),
+                            Id = new Guid("0bac5005-95ae-40b4-b7b0-a1e030e98705"),
                             Code = 10,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1370),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9950),
                             Name = "Outubro"
                         },
                         new
                         {
-                            Id = new Guid("f0509c30-2311-4209-a57f-b512b3b51d93"),
+                            Id = new Guid("719d1ca5-a742-4759-b076-1f4a50b6e3a3"),
                             Code = 11,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1380),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9960),
                             Name = "Novembro"
                         },
                         new
                         {
-                            Id = new Guid("ac9fa14b-38c4-4c4c-a614-162093942e36"),
+                            Id = new Guid("b4c198ef-7e46-4b7f-824f-e6daac67e678"),
                             Code = 12,
-                            CreatedAt = new DateTime(2024, 8, 3, 12, 31, 21, 636, DateTimeKind.Local).AddTicks(1380),
+                            CreatedAt = new DateTime(2024, 8, 3, 12, 19, 0, 999, DateTimeKind.Local).AddTicks(9960),
                             Name = "Dezembro"
                         });
                 });
