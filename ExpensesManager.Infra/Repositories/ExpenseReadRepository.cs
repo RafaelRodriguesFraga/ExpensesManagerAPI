@@ -50,7 +50,7 @@ namespace ExpensesManager.Infra.Repositories
                 .Select(g => new TotalExpenseDto
                 {
                     InvoiceMonth = g.Key.Name,
-                    TotalPrice = g.Sum(e => e.Price),
+                    TotalPrice = g.Sum(e => e.IsInstallment ? e.InstallmentPrice : e.Price),
                     Code = g.Key.Code
                 })
                 .OrderBy(g => g.Code)
