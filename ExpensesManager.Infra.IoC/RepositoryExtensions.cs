@@ -1,5 +1,4 @@
-﻿using ExpensesManager.Application.Services.Person;
-using ExpensesManager.Domain.Repositories;
+﻿using ExpensesManager.Domain.Repositories;
 using ExpensesManager.Infra.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +15,7 @@ namespace ListaComprasApi.Infra.CrossCutting.IoC
             services.AddScoped<IPersonReadRepository, PersonReadRepository>();       
             services.AddScoped<IExpenseWriteRepository, ExpenseWriteRepository>(); 
             services.AddScoped<IExpenseReadRepository, ExpenseReadRepository>();        
+            services.AddScoped<IMonthReadRepository, MonthReadRepository>();        
 
             return services;
         }

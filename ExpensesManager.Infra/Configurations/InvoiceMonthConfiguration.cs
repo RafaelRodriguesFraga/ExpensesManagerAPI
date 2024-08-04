@@ -33,7 +33,7 @@ public class InvoiceMonthConfiguration : IEntityTypeConfiguration<InvoiceMonth>
             .HasColumnName("code");
 
         builder.HasData(
-            new InvoiceMonth("Janeio", 01),
+            new InvoiceMonth("Janeiro", 01),
             new InvoiceMonth("Fevereiro", 02),
             new InvoiceMonth("Marco", 03),
             new InvoiceMonth("Abril", 04),

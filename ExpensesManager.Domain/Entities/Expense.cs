@@ -29,18 +29,27 @@ namespace ExpensesManager.Domain.Entities
         public Guid InvoiceMonthId { get; private set; }
         public InvoiceMonth InvoiceMonth { get; private set; }
         public bool IsInstallment { get; private set; }
+        public int TotalInstallments { get; private set; }
+        public decimal InstallmentPrice { get; private set; }
+        public int CurrentInstallment { get; private set ; }
+        public string InstallmentInfo {get;private set;}
         public Guid PersonId { get; private set; }
         public Person Person { get; private set; }
 
         public static implicit operator Expense(ExpenseDto expenseDto)
         {
-            return new Expense{
+            return new Expense
+            {
                 CreditCardName = expenseDto.CreditCardName,
                 Description = expenseDto.Description,
                 Price = expenseDto.Price,
                 PurchaseDate = expenseDto.PurchaseDate,
                 InvoiceMonthId = expenseDto.InvoiceMonthId,
                 IsInstallment = expenseDto.IsInstallment,
+                TotalInstallments = expenseDto.TotalInstallments,
+                InstallmentPrice = expenseDto.InstallmentPrice,
+                CurrentInstallment = expenseDto.CurrentInstallment,
+                InstallmentInfo = expenseDto.InstallmentInfo,
                 PersonId = expenseDto.PersonId
             };
         }

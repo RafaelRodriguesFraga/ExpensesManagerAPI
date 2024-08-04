@@ -39,7 +39,7 @@ namespace ExpensesManager.Infra.Configurations
             
             builder.Property(x => x.PurchaseDate)
                 .IsRequired()
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp")
                 .HasColumnName("purchase_date");
 
             builder.Property(x => x.InvoiceMonthId)
@@ -50,6 +50,18 @@ namespace ExpensesManager.Infra.Configurations
             builder.Property(x => x.IsInstallment)
                 .IsRequired()
                 .HasColumnName("is_installment");
+
+            builder.Property(x => x.TotalInstallments)
+                .HasColumnName("total_installments");
+
+            builder.Property(x => x.InstallmentPrice)
+                .HasColumnName("intallment_price");
+
+            builder.Property(x => x.CurrentInstallment)
+                .HasColumnName("current_installment");
+
+            builder.Property(x => x.InstallmentInfo)
+                .HasColumnName("installment_info");
 
             builder.Property(x => x.PersonId)
                 .IsRequired()
