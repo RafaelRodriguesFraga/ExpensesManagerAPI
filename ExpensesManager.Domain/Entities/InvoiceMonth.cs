@@ -4,8 +4,9 @@ namespace ExpensesManager.Domain.Entities;
 
 public class InvoiceMonth : BaseEntity
 {
-    public InvoiceMonth(string name, int code)
+    public InvoiceMonth(Guid id, string name, int code)
     {
+        Id = id;
         Name = name;
         Code = code;
     }
