@@ -8,5 +8,6 @@ namespace ExpensesManager.Application.ViewModels.Expense
         public DateTime PurchaseDate { get; set; }
         public string InvoiceMonth { get; set; } = string.Empty;
         public bool IsInstallment { get; set; }
+        
     }
 }

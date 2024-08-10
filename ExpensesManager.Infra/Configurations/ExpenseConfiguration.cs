@@ -55,7 +55,7 @@ namespace ExpensesManager.Infra.Configurations
                 .HasColumnName("total_installments");
 
             builder.Property(x => x.InstallmentPrice)
-                .HasColumnName("intallment_price");
+                .HasColumnName("installment_price");
 
             builder.Property(x => x.CurrentInstallment)
                 .HasColumnName("current_installment");

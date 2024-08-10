@@ -7,5 +7,7 @@ namespace ExpensesManager.Application.ViewModels.Expense
         public decimal Price { get; set; }
         public string InvoiceMonth { get; set; } = string.Empty;
         public bool IsInstallment { get; set; }
+        public decimal InstallmentPrice { get; set; }
+        public string InstallmentInfo { get; set; } = string.Empty;
     }
 }
