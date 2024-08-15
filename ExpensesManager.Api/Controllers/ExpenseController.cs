@@ -17,7 +17,7 @@ namespace ExpensesManager.Api.Controllers
         {
             _expensesServiceApplication = expensesServiceApplication;
         }
-      
+
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] ExpenseDto expensesDto)
         {
@@ -25,31 +25,38 @@ namespace ExpensesManager.Api.Controllers
 
             return ResponseCreated();
         }
-        
+
         [HttpGet("{personId:guid}")]
         public async Task<IActionResult> GetAllAsync([FromRoute] Guid personId)
         {
 
             var expenses = await _expensesServiceApplication.GetAllAsync(personId);
-            
+
             return ResponseOk(expenses);
         }
 
         [HttpGet("personId/{personId:guid}")]
-        public async Task<IActionResult> GetAllGroupByPurchaseDate([FromRoute] Guid personId, [FromQuery] string invoiceMonth)
+        public async Task<IActionResult> GetAllGroupByPurchaseDateAsync([FromRoute] Guid personId, [FromQuery] string invoiceMonth)
         {
 
             var expenses = await _expensesServiceApplication.GetAllGroupByPurchaseDateAsync(personId, invoiceMonth);
-    
+
             return ResponseOk(expenses);
         }
-        
+
         [HttpGet("totalByMonth")]
-        public async Task<IActionResult> GetTotalByMonth([FromQuery] Guid personId)
+        public async Task<IActionResult> GetTotalByMonthAsync([FromQuery] Guid personId)
         {
 
-            var expenses = await _expensesServiceApplication.GetTotalByMonth(personId);
+            var expenses = await _expensesServiceApplication.GetTotalByMonthAsync(personId);
 
+            return ResponseOk(expenses);
+        }
+
+        [HttpGet("personId/{personId:guid}/creditCardName/{creditCardName}")]
+        public async Task<IActionResult> FindByCreditCardNameAndInvoiceMonthAsync([FromRoute] Guid personId, [FromRoute] string creditCardName, [FromQuery] string invoiceMonth)
+        {
+            var expenses = await _expensesServiceApplication.FindByCreditCardNameAndInvoiceMonthAsync(creditCardName, invoiceMonth, personId);
             return ResponseOk(expenses);
         }
 
