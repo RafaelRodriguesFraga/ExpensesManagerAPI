@@ -1,8 +1,6 @@
 using AutoMapper;
 using ExpensesManager.Application.ViewModels.Expense;
-using ExpensesManager.Application.ViewModels.Person;
 using ExpensesManager.Domain.DTOs;
-using ExpensesManager.Domain.Entities;
 
 namespace ExpensesManager.Application.Mappers
 {
@@ -11,6 +9,9 @@ namespace ExpensesManager.Application.Mappers
         public DtoToViewModelMapper()
         {
             CreateMap<TotalExpenseDto, TotalExpenseViewModel>();
+            CreateMap<MonthlyTotalExpenseReportDto, MonthlyTotalExpenseReportViewModel>();
+
+
         }
     }
 }

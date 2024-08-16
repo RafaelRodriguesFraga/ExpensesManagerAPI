@@ -9,6 +9,7 @@ namespace ExpensesManager.Domain.Repositories
         Task<IEnumerable<Expense>> GetAllAsync(Guid personId);
         Task<Dictionary<string, IEnumerable<Expense>>> GetAllGroupByPurchaseDateAsync(Guid personId, string invoiceMonth);
         Task<IEnumerable<TotalExpenseDto>> CalculateTotalAsync(Guid personId);
+        Task<Dictionary<string, MonthlyTotalExpenseReportDto>> GetMonthlyTotalsReportAsync(Guid personId);
         Task<IEnumerable<TotalExpenseDto>> CalculateTotalByCreditCardNameAsync(string creditCardName, Guid personId);
         Task<IEnumerable<Expense>> GetByCreditCardNameAsync(string credtCardName);
         Task<IEnumerable<Expense>> GetByInvoiceMonthAsync(Guid invoiceMonthId);

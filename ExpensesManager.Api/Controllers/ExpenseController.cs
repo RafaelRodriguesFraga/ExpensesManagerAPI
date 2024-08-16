@@ -60,5 +60,12 @@ namespace ExpensesManager.Api.Controllers
             return ResponseOk(expenses);
         }
 
+        [HttpGet("personId/{personId:guid}/monthly-totals-report")]
+        public async Task<IActionResult> GetMonthlyTotalsReportAsync([FromRoute] Guid personId) {
+
+            var monthlyTotals = await _expensesServiceApplication.GetMonthlyTotalsReportAsync(personId);
+            return ResponseOk(monthlyTotals);
+        }
+
     }
 }

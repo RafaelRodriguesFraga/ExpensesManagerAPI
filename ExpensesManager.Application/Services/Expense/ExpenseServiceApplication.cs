@@ -112,6 +112,21 @@ namespace ExpensesManager.Application.Services.Expense
             return expenseViewModelDict;
         }
 
+        public async Task<Dictionary<string, MonthlyTotalExpenseReportViewModel>> GetMonthlyTotalsReportAsync(Guid personId)
+        {
+            var monthlyTotals = await _readRepository.GetMonthlyTotalsReportAsync(personId);
+
+            var monthlyTotalsViewModelDict = new Dictionary<string, MonthlyTotalExpenseReportViewModel>();
+
+            foreach (var keyValuePair in monthlyTotals)
+            {
+                var monthlyTotalsList = _mapper.Map<MonthlyTotalExpenseReportViewModel>(keyValuePair.Value);
+                monthlyTotalsViewModelDict.Add(keyValuePair.Key, monthlyTotalsList);
+            }
+
+            return monthlyTotalsViewModelDict;
+        }
+
         public async Task<IEnumerable<TotalExpenseViewModel>> GetTotalByMonthAsync(Guid personId)
         {
             var expenses = await _readRepository.CalculateTotalAsync(personId);
