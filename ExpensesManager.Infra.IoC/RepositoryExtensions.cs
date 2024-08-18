@@ -15,7 +15,9 @@ namespace ListaComprasApi.Infra.CrossCutting.IoC
             services.AddScoped<IPersonReadRepository, PersonReadRepository>();       
             services.AddScoped<IExpenseWriteRepository, ExpenseWriteRepository>(); 
             services.AddScoped<IExpenseReadRepository, ExpenseReadRepository>();        
-            services.AddScoped<IMonthReadRepository, MonthReadRepository>();        
+            services.AddScoped<IMonthReadRepository, MonthReadRepository>();
+            services.AddScoped<IAuthWriteRepository, AuthWriteRepository>();
+            services.AddScoped<IAuthReadRepository, AuthReadRepository>();        
 
             return services;
         }

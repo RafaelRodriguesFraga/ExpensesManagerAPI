@@ -22,9 +22,15 @@ namespace ExpensesManager.Domain.Entities
             return new User(userRequestDto.Email, userRequestDto.Password);
         }
 
-        private void HashPassword(string password)
+        private string HashPassword(string password)
         {
             Password = BCrypt.Net.BCrypt.HashPassword(password);
+
+            return Password;
+        }
+        
+        public void SetPassword(string password) {
+            Password = HashPassword(password);
         }
 
         public override void Validate()

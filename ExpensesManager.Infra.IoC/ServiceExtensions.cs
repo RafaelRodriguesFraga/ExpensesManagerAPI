@@ -4,6 +4,7 @@ using ExpensesManager.Application.Services.Token;
 using ExpensesManager.Application.Services.User;
 using ExpensesManager.Application.Services.Expense;
 using ExpensesManager.Application.Services.Person;
+using ExpensesManager.Application.Services.Auth;
 
 namespace ExpensesManager.Infra.IoC
 {
@@ -15,6 +16,7 @@ namespace ExpensesManager.Infra.IoC
             services.AddScoped<IUserServiceApplication, UserServiceApplication>();
             services.AddScoped<IPersonServiceApplication, PersonServiceApplication>();
             services.AddScoped<IExpenseServiceApplication, ExpenseServiceApplication>();
+            services.AddScoped<IAuthServiceApplication, AuthServiceApplication>();
 
 
             return services;
