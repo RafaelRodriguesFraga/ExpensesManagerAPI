@@ -42,7 +42,7 @@ namespace ExpensesManager.Application.Services.Expense
                 decimal installmentPrice = expenseDto.Price / totalInstallments;
                 installmentPrice = Math.Round(installmentPrice, 2);
                 
-                for (int i = 0; i < totalInstallments; i++)
+                for (int i = 1; i <= totalInstallments; i++)
                 {
                     var installmentDate = expenseDto.PurchaseDate.AddMonths(i);
                     var invoiceMonthId = await GetInvoiceMonthIdByDateAsync(installmentDate);
@@ -57,8 +57,8 @@ namespace ExpensesManager.Application.Services.Expense
                         IsInstallment = expenseDto.IsInstallment,
                         TotalInstallments = totalInstallments,
                         InstallmentPrice = installmentPrice,
-                        CurrentInstallment = i + 1,
-                        InstallmentInfo = $"Parcela {i + 1} de {totalInstallments}",
+                        CurrentInstallment = i,
+                        InstallmentInfo = $"Parcela {i} de {totalInstallments}",
                         PersonId = expenseDto.PersonId
                     };
 

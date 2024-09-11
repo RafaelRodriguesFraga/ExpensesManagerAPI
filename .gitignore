@@ -26,3 +26,13 @@ ExpensesManager.Api/appsettings.Development.json
 .idea/.idea.expenses-manager-api/.idea/.name
 .idea/.idea.expenses-manager-api/.idea/workspace.xml
 .idea/.idea.expenses-manager-api/.idea/projectSettingsUpdater.xml
+/ExpensesManager.Api/.config
+/ExpensesManager.Api/bin/Release/net6.0
+/ExpensesManager.Api/Properties/PublishProfiles
+/ExpensesManager.Api/Properties/ServiceDependencies/expenses-manager-api-prd - Web Deploy
+/ExpensesManager.Api/Properties/serviceDependencies.expenses-manager-api - Web Deploy.json.user
+/ExpensesManager.Application/bin/Release/net6.0
+/ExpensesManager.Domain/bin/Release/net6.0
+/ExpensesManager.Infra/bin/Release/net6.0
+/ExpensesManager.Infra.IoC/bin/Release/net6.0
+/ExpensesManager.Tests/bin/Release/net6.0
