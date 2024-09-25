@@ -5,7 +5,11 @@ using ExpensesManager.Application.Services.Auth;
 using ExpensesManager.Application.Services.User;
 using ExpensesManager.Application.ViewModels.Auth;
 using ExpensesManager.Application.ViewModels.Login;
+using ExpensesManager.Application.ViewModels.Token;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ExpensesManager.Api.Controllers
 {
@@ -37,6 +41,34 @@ namespace ExpensesManager.Api.Controllers
             var token = _tokenServiceApplication.GenerateTokenAsync(authenticateUser);
 
             return ResponseOk(token);
+        }
+
+        [HttpPost("refresh-token")]
+        public IActionResult RefreshToken(RefreshTokenRequestViewModel refreshTokenViewModel)
+        {
+            var principal = _tokenServiceApplication.GetPrincipalFromExpiredToken(refreshTokenViewModel.Token);
+            var emailClaim = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email || c.Type == JwtRegisteredClaimNames.Email);
+            var username = emailClaim?.Value;
+
+            var savedRefreshToken = _tokenServiceApplication.GetRefreshToken(username);
+            if (savedRefreshToken != refreshTokenViewModel.RefreshToken)
+            {
+                throw new SecurityTokenException("Invalid refresh token");
+            }
+
+            var newToken = _tokenServiceApplication.GenerateToken(principal.Claims);
+            var newRefreshToken = _tokenServiceApplication.GenerateRefreshToken();
+
+            _tokenServiceApplication.DeleteRefreshToken(username, refreshTokenViewModel.RefreshToken);
+            _tokenServiceApplication.SaveRefreshToken(username, newRefreshToken);
+
+            var newRefreshTokenViewModel = new RefreshTokenResponseViewModel
+            {
+                NewToken = newToken,
+                NewRefreshToken = newRefreshToken
+            };
+
+            return ResponseOk(newRefreshTokenViewModel);
         }
 
         [HttpPost("reset-password")]         

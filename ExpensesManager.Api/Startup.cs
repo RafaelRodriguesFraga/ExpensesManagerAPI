@@ -15,6 +15,7 @@ using ExpensesManager.Application.Services.Person;
 using ExpensesManager.Infra.IoC;
 using ListaComprasApi.Infra.CrossCutting.IoC;
 using ExpensesManager.Application.Mappers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ExpensesManager.Api
 {
@@ -88,6 +89,13 @@ namespace ExpensesManager.Api
             services.AddAutoMapper(typeof(EntityToViewModelMapper));
             services.AddServices();
             services.AddRepositories();
+
+            var redisConfiguration = Configuration.GetSection("RedisSettings:localhost").Value;
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = redisConfiguration;
+            });
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
