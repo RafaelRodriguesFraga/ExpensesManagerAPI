@@ -22,9 +22,11 @@ namespace ExpensesManager.Api
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _environment;
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -90,7 +92,8 @@ namespace ExpensesManager.Api
             services.AddServices();
             services.AddRepositories();
 
-            var redisConfiguration = Configuration.GetSection("RedisSettings:localhost").Value;
+            var environment = _environment.IsDevelopment() ? "localhost" : "Cloud";
+            var redisConfiguration = Configuration.GetSection($"RedisSettings:{environment}").Value;
 
             services.AddStackExchangeRedisCache(options =>
             {
