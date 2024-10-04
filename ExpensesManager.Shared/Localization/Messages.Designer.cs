@@ -115,6 +115,15 @@ namespace ExpensesManager.Shared.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid refresh token.
+        /// </summary>
+        public static string InvalidRefreshToken {
+            get {
+                return ResourceManager.GetString("InvalidRefreshToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Token.
         /// </summary>
         public static string InvalidToken {

@@ -163,4 +163,7 @@
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="InvalidRefreshToken" xml:space="preserve">
+    <value>Invalid refresh token</value>
+  </data>
 </root>

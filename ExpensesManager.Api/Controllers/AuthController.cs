@@ -6,7 +6,9 @@ using ExpensesManager.Application.Services.User;
 using ExpensesManager.Application.ViewModels.Auth;
 using ExpensesManager.Application.ViewModels.Login;
 using ExpensesManager.Application.ViewModels.Token;
+using ExpensesManager.Shared.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -19,15 +21,23 @@ namespace ExpensesManager.Api.Controllers
         private readonly ITokenServiceApplication _tokenServiceApplication;
         private readonly IUserServiceApplication _userServiceApplication;
         private readonly IAuthServiceApplication _authServiceApplication;
+        private readonly IStringLocalizer _localizer;
 
-        public AuthController(IResponseFactory responseFactory, ITokenServiceApplication tokenServiceApplication,
-            IUserServiceApplication userServiceApplication, IAuthServiceApplication authServiceApplication) : base(responseFactory)
+
+        public AuthController(IResponseFactory responseFactory, 
+            ITokenServiceApplication tokenServiceApplication,
+            IUserServiceApplication userServiceApplication, 
+            IAuthServiceApplication authServiceApplication,
+             IStringLocalizerFactory localizerFactory) : base(responseFactory)
         {
             _tokenServiceApplication = tokenServiceApplication;
             _userServiceApplication = userServiceApplication;
             _authServiceApplication = authServiceApplication;
-        }
 
+            var assembly = typeof(Messages).Assembly;
+            _localizer = localizerFactory.Create("Localization.Messages", assembly.GetName().Name);
+        }
+       
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync(LoginRequestViewModel loginViewModel)
         {
@@ -53,7 +63,7 @@ namespace ExpensesManager.Api.Controllers
             var savedRefreshToken = _tokenServiceApplication.GetRefreshToken(username);
             if (savedRefreshToken != refreshTokenViewModel.RefreshToken)
             {
-                throw new SecurityTokenException("Invalid refresh token");
+                throw new SecurityTokenException(_localizer["InvalidRefreshToken"]);
             }
 
             var newToken = _tokenServiceApplication.GenerateToken(principal.Claims);
