@@ -16,6 +16,12 @@ using ExpensesManager.Infra.IoC;
 using ListaComprasApi.Infra.CrossCutting.IoC;
 using ExpensesManager.Application.Mappers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Microsoft.Extensions.Options;
+using ExpensesManager.Api.Filters;
+using ExpensesManager.Shared.Localization;
 
 namespace ExpensesManager.Api
 {
@@ -64,6 +70,8 @@ namespace ExpensesManager.Api
                          new List<string>()
                     } 
                 });
+
+                c.OperationFilter<AcceptLanguageHeaderParameter>();
             });            
             services.AddControllers();
 
@@ -99,10 +107,27 @@ namespace ExpensesManager.Api
             {
                 options.Configuration = redisConfiguration;
             });
+
+            services.AddLocalization();
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { "en-US", "pt-BR" };
+                options.DefaultRequestCulture = new RequestCulture("pt-BR");
+                options.SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+                options.SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var localizerFactory = serviceProvider.GetService<IStringLocalizerFactory>();
+
+            LocalizerService.Configure(localizerFactory);
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
         {
+            var localizationOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>().Value;
+            app.UseRequestLocalization(localizationOptions);
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

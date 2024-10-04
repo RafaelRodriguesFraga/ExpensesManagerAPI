@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DotnetBaseKit.Components.Application.Base;
 using DotnetBaseKit.Components.Shared.Notifications;
 using ExpensesManager.Application.ViewModels.User;
 using ExpensesManager.Domain.Repositories;
+using ExpensesManager.Shared;
+using ExpensesManager.Shared.Localization;
+using Microsoft.Extensions.Localization;
 
 namespace ExpensesManager.Application.Services.Auth
 {
@@ -13,10 +12,19 @@ namespace ExpensesManager.Application.Services.Auth
     {
         private readonly IAuthReadRepository _readRepository;
         private readonly IAuthWriteRepository _writeRepository;
-        public AuthServiceApplication(NotificationContext notificationContext, IAuthReadRepository readRepository, IAuthWriteRepository writeRepository) : base(notificationContext)
+        private readonly IStringLocalizer _localizer;
+
+        public AuthServiceApplication(
+            NotificationContext notificationContext,
+            IAuthReadRepository readRepository,
+            IAuthWriteRepository writeRepository,
+            IStringLocalizerFactory localizerFactory) : base(notificationContext)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
+            
+             var assembly = typeof(Messages).Assembly;
+            _localizer = localizerFactory.Create("Localization.Messages", assembly.GetName().Name);
         }
 
         public async Task<UserViewModel> GetByEmaillAsync(string email)
@@ -25,7 +33,7 @@ namespace ExpensesManager.Application.Services.Auth
             var userNotFound = user == null;
             if (userNotFound)
             {
-                _notificationContext.AddNotification("User", "User not found");
+                _notificationContext.AddNotification(_localizer["User"], _localizer["UserNotFound"]);
                 return default!;
             }
 
@@ -38,7 +46,7 @@ namespace ExpensesManager.Application.Services.Auth
             var userNotFound = user == null;
             if (userNotFound)
             {
-                _notificationContext.AddNotification("User", "User not found");
+                _notificationContext.AddNotification(_localizer["User"], _localizer["UserNotFound"]);
                 return;
             }
 

@@ -5,6 +5,8 @@ using DotnetBaseKit.Components.Shared.Notifications;
 using ExpensesManager.Application.ViewModels.Expense;
 using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Repositories;
+using ExpensesManager.Shared.Localization;
+using Microsoft.Extensions.Localization;
 
 namespace ExpensesManager.Application.Services.Expense
 {
@@ -13,17 +15,23 @@ namespace ExpensesManager.Application.Services.Expense
         private readonly IExpenseWriteRepository _writeRepository;
         private readonly IExpenseReadRepository _readRepository;
         private readonly IMonthReadRepository _monthReadRepository;
+        private readonly IStringLocalizer _localizer;
+
         private IMapper _mapper;
         public ExpenseServiceApplication(NotificationContext notificationContext,
             IExpenseWriteRepository writeRepository,
             IExpenseReadRepository readRepository,
             IMapper mapper,
-            IMonthReadRepository monthReadRepository) : base(notificationContext)
+            IMonthReadRepository monthReadRepository,
+            IStringLocalizerFactory localizerFactory) : base(notificationContext)
         {
             _writeRepository = writeRepository;
             _readRepository = readRepository;
             _mapper = mapper;
             _monthReadRepository = monthReadRepository;
+
+            var assembly = typeof(Messages).Assembly;
+            _localizer = localizerFactory.Create("Localization.Messages", assembly.GetName().Name);
         }
 
         public async Task CreateAsync(ExpenseDto expenseDto)
@@ -144,7 +152,7 @@ namespace ExpensesManager.Application.Services.Expense
             var invalidMonth = month == null;
             if (invalidMonth)
             {
-                _notificationContext.AddNotification("Month", "Month not found for month code: " + monthCode);
+                _notificationContext.AddNotification(_localizer["Month"], _localizer["MonthNotFound"]);
                 return default;
             }
 

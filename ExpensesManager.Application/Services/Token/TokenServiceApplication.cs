@@ -6,8 +6,10 @@ using DotnetBaseKit.Components.Application.Base;
 using DotnetBaseKit.Components.Shared.Notifications;
 using expensesManager.Application.Services;
 using ExpensesManager.Application.ViewModels.User;
+using ExpensesManager.Shared.Localization;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 
@@ -17,12 +19,18 @@ namespace ExpensesManager.Application.Services.Token
     {
         private readonly IConfiguration _configuration;
         private readonly IDistributedCache _cache;
+        private readonly IStringLocalizer _localizer;
+
 
         public TokenServiceApplication(NotificationContext notificationContext, IConfiguration configuration, 
-            IDistributedCache cache) : base(notificationContext)
+            IDistributedCache cache,
+            IStringLocalizerFactory localizerFactory) : base(notificationContext)
         {
             _configuration = configuration;
             _cache = cache;
+
+            var assembly = typeof(Messages).Assembly;
+            _localizer = localizerFactory.Create("Localization.Messages", assembly.GetName().Name);
         }       
 
         public TokenViewModel GenerateTokenAsync(UserViewModel userViewModel)
@@ -32,7 +40,7 @@ namespace ExpensesManager.Application.Services.Token
 
             if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(expiresToken))
             {
-                throw new Exception("Secret or ExpiresToken not found in appsettings.json");
+                throw new Exception(_localizer["SecretOrExpiresTokenNotFound"]);
             }
 
             var date = DateTime.Now;
@@ -83,7 +91,7 @@ namespace ExpensesManager.Application.Services.Token
 
             if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(expiresToken))
             {
-                throw new Exception("Secret or ExpiresToken not found in appsettings.json");
+                throw new Exception(_localizer["SecretOrExpiresTokenNotFound"]);
             }
 
             var date = DateTime.Now;
@@ -135,7 +143,7 @@ namespace ExpensesManager.Application.Services.Token
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
             if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new SecurityTokenException("Invalid token!");
+                throw new SecurityTokenException(_localizer["InvalidToken"]);
             }
 
 

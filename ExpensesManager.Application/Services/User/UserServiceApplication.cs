@@ -5,6 +5,8 @@ using ExpensesManager.Application.ViewModels.Login;
 using ExpensesManager.Application.ViewModels.User;
 using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Repositories;
+using ExpensesManager.Shared.Localization;
+using Microsoft.Extensions.Localization;
 
 namespace ExpensesManager.Application.Services
 {
@@ -12,11 +14,19 @@ namespace ExpensesManager.Application.Services
     {
         private readonly IUserWriteRepository _writeRepository;
         private readonly IUserReadRepository _readRepository;
+        private readonly IStringLocalizer _localizer;
 
-        public UserServiceApplication(NotificationContext notificationContext, IUserReadRepository readRepository, IUserWriteRepository writeRepository) : base(notificationContext)
+        public UserServiceApplication(
+            NotificationContext notificationContext, 
+            IUserReadRepository readRepository,
+            IUserWriteRepository writeRepository,
+            IStringLocalizerFactory localizerFactory) : base(notificationContext)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
+
+            var assembly = typeof(Messages).Assembly;
+            _localizer = localizerFactory.Create("Localization.Messages", assembly.GetName().Name);
         }
 
         public async Task<UserViewModel> AuthenticateAsync(LoginRequestViewModel loginRequestViewModel)
@@ -26,7 +36,7 @@ namespace ExpensesManager.Application.Services
             var userNotFound = user == null;
             if (userNotFound)
             {
-                _notificationContext.AddNotification("User", "User not found");
+                _notificationContext.AddNotification(_localizer["User"], _localizer["UserNotFound"]);
                 return default!;
             }
 
@@ -34,7 +44,7 @@ namespace ExpensesManager.Application.Services
 
             if (!verifyPassowrd)
             {
-                _notificationContext.AddNotification("User", "Invalid user or password.");
+                _notificationContext.AddNotification(_localizer["User"], _localizer["InvalidUserOrPassword"]);
                 return default!;
             }
 
@@ -56,7 +66,7 @@ namespace ExpensesManager.Application.Services
 
             if (emailExists)
             {
-                _notificationContext.AddNotification("Email", "There is already a user with a registered email address.");
+                _notificationContext.AddNotification(_localizer["Email"], _localizer["EmailAlreadyExists"]);
                 return;
             }
 

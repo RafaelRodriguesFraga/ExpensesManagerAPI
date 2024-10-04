@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpensesManager.Shared", "E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpensesManager.Tests", "ExpensesManager.Tests\ExpensesManager.Tests.csproj", "{A1A3358A-2592-4448-9B13-A95E80ECF5C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpensesManager.Infra.IoC", "ExpensesManager.Infra.IoC\ExpensesManager.Infra.IoC.csproj", "{A5A326EF-4591-4111-807E-68BC240FDC7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpensesManager.Infra.IoC", "ExpensesManager.Infra.IoC\ExpensesManager.Infra.IoC.csproj", "{A5A326EF-4591-4111-807E-68BC240FDC7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +77,7 @@ Global
 		{A5A326EF-4591-4111-807E-68BC240FDC7C} = {46F5B7F6-4DF0-469A-8A66-4F03B69F3005}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_ConfirmAddLanguageFile = False
 		SolutionGuid = {970C56D4-E470-4359-8A62-2850991AE79F}
 	EndGlobalSection
 EndGlobal

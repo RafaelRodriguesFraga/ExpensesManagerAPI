@@ -5,6 +5,8 @@ using DotnetBaseKit.Components.Shared.Notifications;
 using ExpensesManager.Application.ViewModels.Person;
 using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Repositories;
+using ExpensesManager.Shared.Localization;
+using Microsoft.Extensions.Localization;
 
 namespace ExpensesManager.Application.Services.Person
 {
@@ -13,12 +15,22 @@ namespace ExpensesManager.Application.Services.Person
         private readonly IPersonWriteRepository _personWriteRepository;
         private readonly IPersonReadRepository _personReadRepository;
         private IMapper _mapper;
+        private readonly IStringLocalizer _localizer;
 
-        public PersonServiceApplication(NotificationContext notificationContext, IPersonWriteRepository personWriteRepository, IPersonReadRepository personReadRepository, IMapper mapper) : base(notificationContext)
+
+        public PersonServiceApplication(
+            NotificationContext notificationContext,
+            IPersonWriteRepository personWriteRepository,
+            IPersonReadRepository personReadRepository,
+            IMapper mapper,
+            IStringLocalizerFactory localizerFactory) : base(notificationContext)
         {
             _personWriteRepository = personWriteRepository;
             _personReadRepository = personReadRepository;
             _mapper = mapper;
+
+            var assembly = typeof(Messages).Assembly;
+            _localizer = localizerFactory.Create("Localization.Messages", assembly.GetName().Name);
         }
 
         public async Task CreateAsync(PersonDto person)
@@ -56,7 +68,7 @@ namespace ExpensesManager.Application.Services.Person
             var person = await _personReadRepository.GetByIdAsync(id);
             if (person == null)
             {
-                _notificationContext.AddNotification("Error", "Person not found");
+                _notificationContext.AddNotification(_localizer["Error"], _localizer["PersonNotFound"]);
                 return default!;
             }
 
