@@ -10,7 +10,8 @@ namespace ExpensesManager.Domain.Validations
         private readonly IStringLocalizer _localizer;
 
         public ExpenseDtoContract()
-        {          
+        {
+            _localizer = LocalizerService.GetLocalizer("Localization.Messages", typeof(Messages).Assembly.GetName().Name!);
 
             RuleFor(x => x.CreditCardName)
                 .NotEmpty()

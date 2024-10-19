@@ -12,6 +12,8 @@ namespace ExpensesManager.Domain.Validations
         public PersonDtoContract()
         {
 
+            _localizer = LocalizerService.GetLocalizer("Localization.Messages", typeof(Messages).Assembly.GetName().Name!);
+
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage(_localizer["NameCannotBeEmpty"]);

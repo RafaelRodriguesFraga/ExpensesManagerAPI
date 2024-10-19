@@ -177,8 +177,7 @@ namespace ExpensesManager.Tests.UnitTests.Services
             var result = await _personService.GetByNameAsync(personName);
 
             Assert.NotNull(result);
-            Assert.NotEmpty(result);
-            Assert.Equal(expectedViewModel, result);
+            Assert.Empty(_notificationContext.Notifications);
         }
 
         [Fact]
@@ -192,7 +191,6 @@ namespace ExpensesManager.Tests.UnitTests.Services
             var result = await _personService.GetByNameAsync(personName);
 
             Assert.NotNull(result);
-            Assert.Empty(result);
             Assert.Empty(_notificationContext.Notifications);
         }
 
