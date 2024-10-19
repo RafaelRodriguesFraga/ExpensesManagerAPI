@@ -26,8 +26,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExpensesManager.Application\ExpensesManager.Application.csproj" />
+    <ProjectReference Include="..\ExpensesManager.Infra.IoC\ExpensesManager.Infra.IoC.csproj" />
     <ProjectReference Include="..\ExpensesManager.Infra\ExpensesManager.Infra.csproj" />
-    <ProjectReference Include="..\ExpensesManager.Infra.IoC\ExpensesManager.Infra.Ioc.csproj" />
   </ItemGroup>
 
     <ItemGroup>
