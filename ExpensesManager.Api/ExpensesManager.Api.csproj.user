@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <NameOfLastUsedPublishProfile>D:\Desenvolvimento\C#\ExpensesManagerAPI\ExpensesManager.Api\Properties\PublishProfiles\expenses-manager-api-prd - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
-    <ActiveDebugProfile>WebApplication1</ActiveDebugProfile>
+    <ActiveDebugProfile>Docker</ActiveDebugProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>

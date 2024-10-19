@@ -10,6 +10,8 @@ using ExpensesManager.Application.ViewModels.Person;
 using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Entities;
 using ExpensesManager.Domain.Repositories;
+using ExpensesManager.Shared.Localization;
+using Microsoft.Extensions.Localization;
 using Moq;
 using Xunit;
 
@@ -20,6 +22,8 @@ namespace ExpensesManager.Tests.UnitTests.Services
         private readonly Mock<IPersonWriteRepository> _mockWriteRepository;
         private readonly Mock<IPersonReadRepository> _mockReadRepository;
         private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<IStringLocalizerFactory> _mockStringLocalizerFactory;
+        private readonly Mock<IStringLocalizer> _mockStringLocalizer;
         private readonly NotificationContext _notificationContext;
         private readonly PersonServiceApplication _personService;
 
@@ -29,7 +33,24 @@ namespace ExpensesManager.Tests.UnitTests.Services
             _mockReadRepository = new Mock<IPersonReadRepository>();
             _mockMapper = new Mock<IMapper>();
             _notificationContext = new NotificationContext();
-            _personService = new PersonServiceApplication(_notificationContext, _mockWriteRepository.Object, _mockReadRepository.Object, _mockMapper.Object);
+
+            _mockStringLocalizer = new Mock<IStringLocalizer>();
+            _mockStringLocalizerFactory = new Mock<IStringLocalizerFactory>();
+
+            _mockStringLocalizer.Setup(x => x["NameCannotBeEmpty"]).Returns(new LocalizedString("NameCannotBeEmpty", "Name cannot be empty"));
+            _mockStringLocalizer.Setup(x => x["UserIdCannotBeEmpty"]).Returns(new LocalizedString("UserIdCannotBeEmpty", "User ID cannot be empty"));
+
+            _mockStringLocalizerFactory.Setup(f => f.Create(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(_mockStringLocalizer.Object);
+
+            LocalizerService.Configure(_mockStringLocalizerFactory.Object);
+
+            _personService = new PersonServiceApplication(
+                _notificationContext,
+                _mockWriteRepository.Object,
+                _mockReadRepository.Object,
+                _mockMapper.Object,
+                _mockStringLocalizerFactory.Object);
         }
 
         [Fact]
@@ -139,30 +160,58 @@ namespace ExpensesManager.Tests.UnitTests.Services
             Assert.Null(result);
             Assert.NotEmpty(_notificationContext.Notifications);
         }
-        //
-        // [Fact]
-        // public async Task GetByNameAsync_ReturnsPersonViewModel_WhenFound()
-        // {
-        //     var personName = "John Doe";
-        //     var person = new Person(personName, Guid.NewGuid());
-        //     _mockReadRepository.Setup(repo => repo.GetByNameAsync(personName)).ReturnsAsync(person);
-        //
-        //     var result = await _personService.GetByNameAsync(personName);
-        //
-        //     Assert.NotNull(result);
-        // }
 
-        // [Fact]
-        // public async Task GetByNameAsync_AddsNotification_WhenNotFound()
-        // {
-        //     var personName = "";
-        //     _mockReadRepository.Setup(repo => repo.GetByNameAsync(personName)).ReturnsAsync((Person)null!);
-        //
-        //     var result = await _personService.GetByNameAsync(personName);
-        //
-        //     Assert.Null(result);
-        //     Assert.NotEmpty(_notificationContext.Notifications);
-        // }
+        [Fact]
+        public async Task GetByNameAsync_ReturnsPersonViewModel_WhenFound()
+        {
+            var personName = "John Doe";
+            var people = new List<Person>
+            {
+                new Person(personName, Guid.NewGuid())
+            };
+
+            var expectedViewModel = people.Select(p => new PersonViewModel { Name = p.Name, Id = p.Id });
+            _mockReadRepository.Setup(r => r.GetByNameAsync(personName)).ReturnsAsync(people);
+            _mockMapper.Setup(mapper => mapper.Map<IEnumerable<PersonViewModel>>(people)).Returns(expectedViewModel);
+
+            var result = await _personService.GetByNameAsync(personName);
+
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
+            Assert.Equal(expectedViewModel, result);
+        }
+
+        [Fact]
+        public async Task GetByNameAsync_AddsNotification_WhenNotFound()
+        {
+            // Arrange
+            var personName = "Unknown Person";
+            var emptyPeopleList = new List<Person>();
+            _mockReadRepository.Setup(repo => repo.GetByNameAsync(personName)).ReturnsAsync(emptyPeopleList);
+
+            var result = await _personService.GetByNameAsync(personName);
+
+            Assert.NotNull(result);
+            Assert.Empty(result);
+            Assert.Empty(_notificationContext.Notifications);
+        }
+
+        [Fact]
+        public async Task GetByNameAsync_ReturnsEmptyList_WhenNotFound()
+        {
+
+            var personName = "Unknown Person";
+            var emptyPeopleList = new List<Person>();
+            _mockReadRepository.Setup(repo => repo.GetByNameAsync(personName)).ReturnsAsync(emptyPeopleList);
+
+
+            var result = await _personService.GetByNameAsync(personName);
+
+
+            Assert.NotNull(result);
+            Assert.Empty(result);
+
+        }
 
     }
 }
