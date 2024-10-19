@@ -2,7 +2,7 @@
 using ExpensesManager.Infra.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ListaComprasApi.Infra.CrossCutting.IoC
+namespace ExpensesManager.Infra.IoC
 {
     public static class RepositoryExtensions
     {
