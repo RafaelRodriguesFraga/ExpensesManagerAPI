@@ -113,6 +113,15 @@ namespace ExpensesManager.Api
             var localizerFactory = serviceProvider.GetService<IStringLocalizerFactory>();
 
             LocalizerService.Configure(localizerFactory);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    policy => policy.AllowAnyOrigin()
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader());
+            });
+
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
@@ -136,6 +145,8 @@ namespace ExpensesManager.Api
             app.UseRouting();
             app.UseAuthorization();
             app.MapControllers();
+
+            app.UseCors("AllowAll");
         }
     }
 }
