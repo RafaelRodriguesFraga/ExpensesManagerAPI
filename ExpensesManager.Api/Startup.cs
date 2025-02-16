@@ -142,11 +142,11 @@ namespace ExpensesManager.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("AllowAll");
             app.UseRouting();
             app.UseAuthorization();
             app.MapControllers();
 
-            app.UseCors("AllowAll");
         }
     }
 }
