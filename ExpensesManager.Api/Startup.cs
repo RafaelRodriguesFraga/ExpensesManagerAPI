@@ -120,7 +120,7 @@ namespace ExpensesManager.Api
                     policy => policy.AllowAnyOrigin()
                                     .AllowAnyMethod()
                                     .AllowAnyHeader()
-                                    .WithExposedHeaders("Authorization"));
+                                    .AllowCredentials());
             });
 
         }
