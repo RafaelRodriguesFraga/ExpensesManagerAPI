@@ -119,8 +119,7 @@ namespace ExpensesManager.Api
                 options.AddPolicy("AllowAll",
                     policy => policy.AllowAnyOrigin()
                                     .AllowAnyMethod()
-                                    .AllowAnyHeader()
-                                    .AllowCredentials());
+                                    .AllowAnyHeader());
             });
 
         }
