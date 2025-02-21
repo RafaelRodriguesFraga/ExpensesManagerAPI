@@ -69,7 +69,7 @@ namespace ExpensesManager.Application.Services.Token
 
             var token = tokenHandler.WriteToken(createToken);
             var refreshToken = GenerateRefreshToken();
-            SaveRefreshToken(userViewModel.Email, refreshToken);
+            // SaveRefreshToken(userViewModel.Email, refreshToken);
             
             TokenViewModel tokenViewModel = new TokenViewModel
             { 
