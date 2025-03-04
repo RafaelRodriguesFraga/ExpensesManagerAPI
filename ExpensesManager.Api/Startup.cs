@@ -11,6 +11,7 @@ using ExpensesManager.Application.Mappers;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using System.Reflection;
 using Microsoft.Extensions.Options;
 using ExpensesManager.Api.Filters;
 using ExpensesManager.Shared.Localization;
@@ -64,6 +65,10 @@ namespace ExpensesManager.Api
                 });
 
                 c.OperationFilter<AcceptLanguageHeaderParameter>();
+                
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });            
             services.AddControllers();
 

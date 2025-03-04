@@ -19,7 +19,25 @@ namespace TestApi.Api.Controllers
         {
             _userServiceApplication = userServiceApplication;
         }
-        
+
+        /// <summary>
+        /// Creates a new user.
+        /// </summary>
+        /// <param name="userRequestDto">The user data to be created</param>
+        /// <returns>A response indicating the user was created successfully</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /user
+        ///     {
+        ///        "email": "test@test.com",
+        ///        "password": "123456",
+        ///        "confirmPassword": "123456"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Returns a response indicating the user was created successfully</response>
+        /// <response code="400">If the user data is invalid or missing required fields</response>        
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> CreateAsync(UserRequestDto userRequestDto)

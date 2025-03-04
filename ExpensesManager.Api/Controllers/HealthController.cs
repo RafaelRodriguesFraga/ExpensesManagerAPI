@@ -8,6 +8,11 @@ namespace ExpensesManager.Api.Controllers;
 
 public class HealthController : ControllerBase
 {
+    /// <summary>
+        /// Checks the health status of the api
+        /// </summary>
+        /// <returns>A simple response indicating the API is up and running.</returns>       
+        /// <response code="200">Returns a response indicating the API is healthy</response>
     [HttpGet]
     public IActionResult Ping()
     {
