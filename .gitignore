@@ -36,3 +36,4 @@ ExpensesManager.Api/appsettings.Development.json
 /ExpensesManager.Infra/bin/Release/net6.0
 /ExpensesManager.Infra.IoC/bin/Release/net6.0
 /ExpensesManager.Tests/bin/Release/net6.0
+.idea/config/applicationhost.config
