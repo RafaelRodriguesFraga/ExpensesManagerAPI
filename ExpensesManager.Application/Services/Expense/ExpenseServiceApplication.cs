@@ -133,11 +133,20 @@ namespace ExpensesManager.Application.Services.Expense
             }
 
             return monthlyTotalsViewModelDict;
-        }
+        }       
 
         public async Task<IEnumerable<TotalExpenseViewModel>> GetTotalByMonthAsync(Guid personId)
         {
             var expenses = await _readRepository.CalculateTotalAsync(personId);
+
+            var totalExpensesMapped = _mapper.Map<IEnumerable<TotalExpenseViewModel>>(expenses);
+
+            return totalExpensesMapped;
+        }
+
+         public async Task<IEnumerable<TotalExpenseViewModel>> GetTotalByMonthAndCreditCardNameAsync(string creditCardName, Guid personId)
+        {
+             var expenses = await _readRepository.CalculateTotalByCreditCardNameAsync(creditCardName, personId);
 
             var totalExpensesMapped = _mapper.Map<IEnumerable<TotalExpenseViewModel>>(expenses);
 

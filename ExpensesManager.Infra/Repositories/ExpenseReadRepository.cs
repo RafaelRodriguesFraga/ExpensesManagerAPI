@@ -65,6 +65,25 @@ namespace ExpensesManager.Infra.Repositories
             return expenses;
         }
 
+        public async Task<IEnumerable<TotalExpenseDto>> CalculateTotalByCreditCardNameAsync(string creditCardName, Guid personId)
+        {
+            var expenses = await Set
+                .AsNoTracking()
+                .Include(x => x.InvoiceMonth)
+                .Where(x => x.PersonId == personId && x.CreditCardName == creditCardName)
+                .GroupBy(e => new { e.InvoiceMonth.Name, e.InvoiceMonth.Code })
+                .Select(g => new TotalExpenseDto
+                {
+                    InvoiceMonth = g.Key.Name,
+                    TotalPrice = g.Sum(e => e.IsInstallment ? e.InstallmentPrice : e.Price),
+                    Code = g.Key.Code
+                })
+                .OrderBy(g => g.Code)
+                .ToListAsync();
+
+            return expenses;
+        }
+
         public async Task<IEnumerable<Expense>> GetByCreditCardNameAsync(string creditCardName)
         {
             return await Set
@@ -99,12 +118,7 @@ namespace ExpensesManager.Infra.Repositories
                 .ToDictionary(g => g.Key.ToString("dd/MM/yyyy"), g => g.ToList().AsEnumerable());
 
             return grouped;
-        }
-
-        public Task<IEnumerable<TotalExpenseDto>> CalculateTotalByCreditCardNameAsync(string creditCardName, Guid personId)
-        {
-            throw new NotImplementedException();
-        }
+        }        
 
         public async Task<Dictionary<string, MonthlyTotalExpenseReportDto>> GetMonthlyTotalsReportAsync(Guid personId)
         {
@@ -146,7 +160,7 @@ namespace ExpensesManager.Infra.Repositories
             {
                 await connection.OpenAsync();
 
-                // Comando para obter o total das faturas
+              
                 using (var command = new NpgsqlCommand(monthlyTotalsQuery, connection))
                 {
                     command.Parameters.Add(new NpgsqlParameter("@personId", personId));

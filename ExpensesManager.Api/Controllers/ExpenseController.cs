@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using DotnetBaseKit.Components.Api.Base;
 using DotnetBaseKit.Components.Api.Responses;
 using ExpensesManager.Application.Services.Expense;
@@ -99,24 +100,33 @@ namespace ExpensesManager.Api.Controllers
         }
 
         /// <summary>
-        /// Retrieves the total expenses of a person by month
+        /// Retrieves the total expenses of a person by month.
         /// </summary>
-        /// <param name="personId">The person's id</param>
-        /// <returns>The total expenses for the specified person by month</returns>
+        /// <param name="personId">The person's ID.</param>
+        /// <param name="creditCardName">Optional. The name of the credit card to filter expenses.</param>
+        /// <returns>The total expenses for the specified person by month.</returns>
         /// <remarks>
-        /// Sample request:
+        /// **Sample request:**
         ///
-        ///     GET /expenses/totalByMonth?personId=3fa85f64-5717-4562-b3fc-2c963f66afa6
+        /// Retrieve total expenses for a person:
+        ///     
+        ///     GET /expenses/total-by-month?personId=3fa85f64-5717-4562-b3fc-2c963f66afa6
+        ///
+        /// Retrieve total expenses filtered by a credit card:
+        ///
+        ///     GET /expenses/total-by-month?personId=3fa85f64-5717-4562-b3fc-2c963f66afa6&amp;creditCardName=Inter
         ///
         /// </remarks>
-        /// <response code="200">Returns the total expenses for the specified person by month</response>
-        /// <response code="401">If the user is not authenticated</response>
-        /// <response code="403">If the userId in the request does not match the logged-in user</response>
-        [HttpGet("totalByMonth")]
-        public async Task<IActionResult> GetTotalByMonthAsync([FromQuery] Guid personId)
+        /// <response code="200">Returns the total expenses for the specified person by month.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="403">If the userId in the request does not match the logged-in user.</response>
+        [HttpGet("total-by-month")]
+        public async Task<IActionResult> GetTotalByMonthAsync([FromQuery, Required] Guid personId, [FromQuery] string? creditCardName)
         {
 
-            var expenses = await _expensesServiceApplication.GetTotalByMonthAsync(personId);
+            var expenses = string.IsNullOrEmpty(creditCardName)
+                   ? await _expensesServiceApplication.GetTotalByMonthAsync(personId)
+                   : await _expensesServiceApplication.GetTotalByMonthAndCreditCardNameAsync(creditCardName, personId);
 
             return ResponseOk(expenses);
         }
@@ -144,6 +154,8 @@ namespace ExpensesManager.Api.Controllers
             var expenses = await _expensesServiceApplication.FindByCreditCardNameAndInvoiceMonthAsync(creditCardName, invoiceMonth, personId);
             return ResponseOk(expenses);
         }
+
+        // GET 
 
         /// <summary>
         /// Retrieves a monthly totals report of expenses for a given person

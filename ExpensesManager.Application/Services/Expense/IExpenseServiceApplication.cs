@@ -11,6 +11,7 @@ namespace ExpensesManager.Application.Services.Expense
         Task<Dictionary<string, IEnumerable<ExpenseGroupByPurchaseDateViewModel>>> GetAllGroupByPurchaseDateAsync(Guid personId, string invoiceMonth);
         Task<Dictionary<string, MonthlyTotalExpenseReportViewModel>> GetMonthlyTotalsReportAsync(Guid personId);
         Task<IEnumerable<TotalExpenseViewModel>> GetTotalByMonthAsync(Guid personId);
+        Task<IEnumerable<TotalExpenseViewModel>> GetTotalByMonthAndCreditCardNameAsync(string creditCardName, Guid personId);
         Task<Dictionary<string, IEnumerable<ExpenseGroupByPurchaseDateViewModel>>> FindByCreditCardNameAndInvoiceMonthAsync(string credtCardName, string invoiceMonth, Guid personId);
 
     }
