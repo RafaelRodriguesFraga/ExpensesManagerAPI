@@ -37,3 +37,11 @@ ExpensesManager.Api/appsettings.Development.json
 /ExpensesManager.Infra.IoC/bin/Release/net6.0
 /ExpensesManager.Tests/bin/Release/net6.0
 .idea/config/applicationhost.config
+bin/
+obj/
+/ExpensesManager.Api/bin/Debug/net8.0/
+/ExpensesManager.Application/bin/Debug/net8.0/
+/ExpensesManager.Domain/bin/Debug/net8.0/
+/ExpensesManager.Infra/bin/Debug/net8.0/
+/ExpensesManager.Shared/bin/Debug/net8.0/
+/ExpensesManager.Tests/bin/Debug/net8.0/
