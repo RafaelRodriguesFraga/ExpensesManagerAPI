@@ -15,6 +15,9 @@ using System.Reflection;
 using Microsoft.Extensions.Options;
 using ExpensesManager.Api.Filters;
 using ExpensesManager.Shared.Localization;
+using ExpensesManager.Api.Hubs;
+using ExpensesManager.Shared.Interfaces;
+using ExpensesManager.Api.Services;
 
 namespace ExpensesManager.Api
 {
@@ -122,10 +125,14 @@ namespace ExpensesManager.Api
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
-                    policy => policy.AllowAnyOrigin()
+                    policy => policy.WithOrigins("http://localhost:5173", "https://expensesmanagerapi.onrender.com")
                                     .AllowAnyMethod()
-                                    .AllowAnyHeader());
+                                    .AllowAnyHeader()
+                                    .AllowCredentials());
             });
+
+            services.AddSignalR();
+            services.AddScoped<ISignalRNotificationService, SignalRNotificationService>();
 
         }
 
@@ -147,10 +154,11 @@ namespace ExpensesManager.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("AllowAll");
             app.UseRouting();
+            app.UseCors("AllowAll");
             app.UseAuthorization();
             app.MapControllers();
+            app.MapHub<ExpenseHub>("/expense-hub");
 
         }
     }

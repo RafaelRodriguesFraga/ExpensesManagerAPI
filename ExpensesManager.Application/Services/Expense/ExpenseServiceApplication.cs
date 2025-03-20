@@ -1,12 +1,15 @@
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using AutoMapper;
 using DotnetBaseKit.Components.Application.Base;
 using DotnetBaseKit.Components.Shared.Notifications;
 using ExpensesManager.Application.ViewModels.Expense;
 using ExpensesManager.Domain.DTOs;
 using ExpensesManager.Domain.Repositories;
+using ExpensesManager.Shared.Interfaces;
 using ExpensesManager.Shared.Localization;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 
 namespace ExpensesManager.Application.Services.Expense
 {
@@ -16,14 +19,17 @@ namespace ExpensesManager.Application.Services.Expense
         private readonly IExpenseReadRepository _readRepository;
         private readonly IMonthReadRepository _monthReadRepository;
         private readonly IStringLocalizer _localizer;
-
+        private readonly ISignalRNotificationService _signalRNotificationService;
         private IMapper _mapper;
+        private ILogger<ExpenseServiceApplication> _logger;
         public ExpenseServiceApplication(NotificationContext notificationContext,
             IExpenseWriteRepository writeRepository,
             IExpenseReadRepository readRepository,
             IMapper mapper,
             IMonthReadRepository monthReadRepository,
-            IStringLocalizerFactory localizerFactory) : base(notificationContext)
+            IStringLocalizerFactory localizerFactory,
+            ISignalRNotificationService signalRNotificationService,
+            ILogger<ExpenseServiceApplication> logger) : base(notificationContext)
         {
             _writeRepository = writeRepository;
             _readRepository = readRepository;
@@ -32,6 +38,8 @@ namespace ExpensesManager.Application.Services.Expense
 
             var assembly = typeof(Messages).Assembly;
             _localizer = localizerFactory.Create("Localization.Messages", assembly.GetName().Name);
+            _signalRNotificationService = signalRNotificationService;
+            _logger = logger;
         }
 
         public async Task CreateAsync(ExpenseDto expenseDto)
@@ -49,7 +57,7 @@ namespace ExpensesManager.Application.Services.Expense
                 int totalInstallments = expenseDto.TotalInstallments;
                 decimal installmentPrice = expenseDto.Price / totalInstallments;
                 installmentPrice = Math.Round(installmentPrice, 2);
-                
+
                 for (int i = 1; i <= totalInstallments; i++)
                 {
                     var installmentDate = expenseDto.PurchaseDate.AddMonths(i);
@@ -71,12 +79,28 @@ namespace ExpensesManager.Application.Services.Expense
                     };
 
                     await _writeRepository.InsertAsync(expensesDto);
-
+                    await _signalRNotificationService.NotifyExpenseUpdate("Nova despesa adicionada");
+                    _logger.LogInformation(
+                                "----------------------------------------------\n" +
+                                $"[{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}] - [SignalR Notification] - Nova despesa adicionada:\n" +
+                                $"Despesa: {expenseDto.Description} | Valor: {expenseDto.Price:C} | Data: {expenseDto.PurchaseDate}\n" +
+                                "Notificação enviada para todos os clientes conectados.\n" +
+                                "----------------------------------------------"
+                            );
                 }
             }
             else
             {
                 await _writeRepository.InsertAsync(expenseDto);
+                await _signalRNotificationService.NotifyExpenseUpdate("Nova despesa adicionada");
+                _logger.LogInformation(
+                               "----------------------------------------------\n" +
+                               $"[{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}] - [SignalR Notification] - Nova despesa adicionada:\n" +
+                               $"Despesa: {expenseDto.Description} | Valor: {expenseDto.Price:C} | Data: {expenseDto.PurchaseDate}\n" +
+                               "Notificação enviada para todos os clientes conectados.\n" +
+                               "----------------------------------------------"
+                           );
+
             }
 
 
@@ -133,7 +157,7 @@ namespace ExpensesManager.Application.Services.Expense
             }
 
             return monthlyTotalsViewModelDict;
-        }       
+        }
 
         public async Task<IEnumerable<TotalExpenseViewModel>> GetTotalByMonthAsync(Guid personId)
         {
@@ -144,9 +168,9 @@ namespace ExpensesManager.Application.Services.Expense
             return totalExpensesMapped;
         }
 
-         public async Task<IEnumerable<TotalExpenseViewModel>> GetTotalByMonthAndCreditCardNameAsync(string creditCardName, Guid personId)
+        public async Task<IEnumerable<TotalExpenseViewModel>> GetTotalByMonthAndCreditCardNameAsync(string creditCardName, Guid personId)
         {
-             var expenses = await _readRepository.CalculateTotalByCreditCardNameAsync(creditCardName, personId);
+            var expenses = await _readRepository.CalculateTotalByCreditCardNameAsync(creditCardName, personId);
 
             var totalExpensesMapped = _mapper.Map<IEnumerable<TotalExpenseViewModel>>(expenses);
 
