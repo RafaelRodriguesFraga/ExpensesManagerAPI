@@ -11,6 +11,7 @@ namespace ExpensesManager.Application.ViewModels.Person
 
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        public Guid UserId {get;set;}
 
         public static implicit operator PersonViewModel(Domain.Entities.Person person)
         {
@@ -18,6 +19,7 @@ namespace ExpensesManager.Application.ViewModels.Person
             {
                 Id = person.Id,
                 Name = person.Name,
+                UserId = person.UserId
             };
         }
     }
