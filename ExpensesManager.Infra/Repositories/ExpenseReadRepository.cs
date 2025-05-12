@@ -1,3 +1,4 @@
+using System.Data;
 using DotnetBaseKit.Components.Infra.Sql.Context.Base;
 using DotnetBaseKit.Components.Infra.Sql.Repositories.Base;
 using ExpensesManager.Domain.DTOs;
@@ -118,93 +119,95 @@ namespace ExpensesManager.Infra.Repositories
                 .ToDictionary(g => g.Key.ToString("dd/MM/yyyy"), g => g.ToList().AsEnumerable());
 
             return grouped;
-        }        
+        }
 
         public async Task<Dictionary<string, MonthlyTotalExpenseReportDto>> GetMonthlyTotalsReportAsync(Guid personId)
         {
             var reports = new Dictionary<string, MonthlyTotalExpenseReportDto>();
-            // Consulta para totais por mês
+
             var monthlyTotalsQuery = @"
-            SELECT 
-                im.name AS ""MonthName"",
-                SUM(
-                    CASE 
-                        WHEN e.is_installment THEN e.installment_price
-   						ELSE e.price
-                    END
-                ) AS TotalInvoice
-            FROM expenses e
-            JOIN invoice_months im ON im.id = e.invoice_month_id
-            WHERE e.person_id = @personId
-            GROUP BY im.name, im.code
-            ORDER BY im.code";
+                SELECT 
+                    im.name AS ""MonthName"",
+                    SUM(
+                        CASE 
+                            WHEN e.is_installment THEN e.installment_price
+                            ELSE e.price
+                        END
+                    ) AS TotalInvoice
+                FROM expenses e
+                JOIN invoice_months im ON im.id = e.invoice_month_id
+                WHERE e.person_id = @personId
+                GROUP BY im.name, im.code
+                ORDER BY im.code";
 
             var cardTotalsQuery = @"
-            SELECT 
-                im.name AS MonthName,
-                e.credit_card_name AS CreditCardName,
-                SUM(
-                    CASE 
-                        WHEN e.is_installment THEN e.installment_price
-	                    WHEN e.current_installment > 1 AND e.current_installment <= e.total_installments THEN e.installment_price -- Para parcelas futuras
-          		        ELSE e.price
-                    END
-                ) AS CardTotal
-            FROM expenses e
-            JOIN invoice_months im ON im.id = e.invoice_month_id
-            WHERE e.person_id = @personId
-            GROUP BY im.name, im.code, e.credit_card_name
-            ORDER BY im.code";
+                SELECT 
+                    im.name AS MonthName,
+                    e.credit_card_name AS CreditCardName,
+                    SUM(
+                        CASE 
+                            WHEN e.is_installment THEN e.installment_price
+                            WHEN e.current_installment > 1 AND e.current_installment <= e.total_installments THEN e.installment_price
+                            ELSE e.price
+                        END
+                    ) AS CardTotal
+                FROM expenses e
+                JOIN invoice_months im ON im.id = e.invoice_month_id
+                WHERE e.person_id = @personId
+                GROUP BY im.name, im.code, e.credit_card_name
+                ORDER BY im.code";
 
-            using (var connection = new NpgsqlConnection(_context.Database.GetDbConnection().ConnectionString))
+            using (var connection = (NpgsqlConnection)_context.Database.GetDbConnection())
             {
-                await connection.OpenAsync();
-
-              
-                using (var command = new NpgsqlCommand(monthlyTotalsQuery, connection))
+                if (connection.State != ConnectionState.Open)
                 {
-                    command.Parameters.Add(new NpgsqlParameter("@personId", personId));
+                    await connection.OpenAsync();
+                }
 
-                    using (var reader = await command.ExecuteReaderAsync())
+                using (var cmdMonthly = new NpgsqlCommand(monthlyTotalsQuery, connection))
+                {
+                    cmdMonthly.Parameters.AddWithValue("@personId", personId);
+
+                    using (var reader = await cmdMonthly.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
                         {
-                            var monthName = reader["MonthName"].ToString();
-                            var totalInvoice = Convert.ToDecimal(reader["TotalInvoice"]);
+                            var monthName = reader["MonthName"]?.ToString();
+                            var totalInvoice = reader["TotalInvoice"] != DBNull.Value ? Convert.ToDecimal(reader["TotalInvoice"]) : 0m;
 
-                            reports[monthName!] = new MonthlyTotalExpenseReportDto
+                            if (monthName != null)
                             {
-                                TotalInvoice = totalInvoice,
-                                CardTotals = new Dictionary<string, decimal>()
-                            };
+                                reports[monthName] = new MonthlyTotalExpenseReportDto
+                                {
+                                    TotalInvoice = totalInvoice,
+                                    CardTotals = new Dictionary<string, decimal>()
+                                };
+                            }
                         }
                     }
                 }
 
-                // Comando para obter os totais por cartão de crédito
-                using (var connection2 = new NpgsqlConnection(_context.Database.GetDbConnection().ConnectionString))
+                using (var cmdCardTotals = new NpgsqlCommand(cardTotalsQuery, connection))
                 {
-                    await connection2.OpenAsync();
+                    cmdCardTotals.Parameters.AddWithValue("@personId", personId);
 
-                    using (var command2 = new NpgsqlCommand(cardTotalsQuery, connection2))
+                    using (var reader = await cmdCardTotals.ExecuteReaderAsync())
                     {
-                        command2.Parameters.Add(new NpgsqlParameter("@personId", personId));
-
-                        using (var reader2 = await command2.ExecuteReaderAsync())
+                        while (await reader.ReadAsync())
                         {
-                            while (await reader2.ReadAsync())
+                            var monthName = reader["MonthName"]?.ToString();
+                            var creditCardName = reader["CreditCardName"]?.ToString();
+                            var cardTotal = reader["CardTotal"] != DBNull.Value ? Convert.ToDecimal(reader["CardTotal"]) : 0m;
+
+                            if (monthName != null && creditCardName != null && reports.ContainsKey(monthName))
                             {
-                                var monthName = reader2["MonthName"].ToString();
-                                var creditCardName = reader2["CreditCardName"].ToString();
-                                var cardTotal = Convert.ToDecimal(reader2["CardTotal"]);
-
-                                reports[monthName!].CardTotals[creditCardName!] = cardTotal;
-
+                                reports[monthName].CardTotals[creditCardName] = cardTotal;
                             }
                         }
                     }
                 }
             }
+
             return reports;
         }
     }
